@@ -6,3 +6,5 @@ abstract class PupsOverviewEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class LoadPups extends PupsOverviewEvent {}
