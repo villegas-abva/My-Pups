@@ -1,18 +1,33 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-class Pup {
-  String name;
-  String breed;
-  int age;
-  bool isSelected;
+class Pup extends Equatable {
+  final String name;
+  final String breed;
+  final int age;
+  final bool isSelected;
 
-  Pup(
+  const Pup(
       {required this.name,
       required this.breed,
       required this.age,
       required this.isSelected});
+
+  Pup copyWith({
+    String? name,
+    String? breed,
+    int? age,
+    bool? isSelected,
+  }) {
+    return Pup(
+      name: name ?? this.name,
+      breed: breed ?? this.breed,
+      age: age ?? this.age,
+      isSelected: isSelected ?? this.isSelected,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
@@ -38,20 +53,6 @@ class Pup {
 
   factory Pup.fromJson(String source) => Pup.fromMap(json.decode(source));
 
-  Pup copyWith({
-    String? name,
-    String? breed,
-    int? age,
-    bool? isSelected,
-  }) {
-    return Pup(
-      name: name ?? this.name,
-      breed: breed ?? this.breed,
-      age: age ?? this.age,
-      isSelected: isSelected ?? this.isSelected,
-    );
-  }
-
   @override
   String toString() {
     return 'Pups(name: $name, breed: $breed, age: $age, isSelected: $isSelected)';
@@ -66,4 +67,12 @@ class Pup {
     );
     return pup;
   }
+
+  @override
+  List<Object> get props => [
+        name,
+        breed,
+        isSelected,
+        age,
+      ];
 }
