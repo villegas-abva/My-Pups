@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_pups/bloc/pups_overview/pups_overview_bloc.dart';
+import 'package:my_pups/bloc/pups_overview/pups_bloc.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -9,40 +9,43 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text('My Pups!')),
-        body: BlocBuilder<PupsOverviewBloc, PupsOverviewState>(
-            builder: (context, state) {
+        body: BlocBuilder<PupsBloc, PupsState>(builder: (context, state) {
           switch (state.status) {
-            case PupsOverviewStatus.initial:
+            case PupsStatus.initial:
               return _buildApiCallSimulation(context);
-            case PupsOverviewStatus.loading:
+            case PupsStatus.loading:
               return const Center(child: CircularProgressIndicator());
-            case PupsOverviewStatus.success:
-              return _buildPupsList(context, state);
-            case PupsOverviewStatus.failure:
+            case PupsStatus.error:
               return const Center(child: Text('Error!!'));
+            case PupsStatus.empty:
+              return SizedBox.shrink();
+            case PupsStatus.success:
+              return _buildPupsList(context, state);
           }
         }));
   }
 }
 
 Widget _buildPupsList(context, state) {
-  var pups = state.pups;
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       ListView.builder(
           shrinkWrap: true,
-          itemCount: pups.length,
+          itemCount: state.pups.length,
           itemBuilder: (context, index) {
+            var pup = state.pups[index];
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onTap: () {
-                  print('pup : ${pups[index].name} tapped!!');
+                  print('pup : ${pup.name} tapped!!');
+                  context.read<PupsBloc>().add(TogglePup(pup: pup));
                 },
                 child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(width: 3),
+                      color: pup.isSelected ? Colors.red : Colors.grey,
+                      border: Border.all(width: pup.isSelected ? 4 : 2),
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Padding(
@@ -50,17 +53,18 @@ Widget _buildPupsList(context, state) {
                       child: Column(
                         children: [
                           Text(
-                            pups[index].name,
-                            style: TextStyle(fontSize: 30),
+                            pup.name,
+                            style:
+                                TextStyle(fontSize: pup.isSelected ? 35 : 25),
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            pups[index].breed,
+                            pup.breed,
                             style: TextStyle(fontSize: 20),
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            pups[index].age.toString(),
+                            pup.age.toString(),
                             style: TextStyle(fontSize: 20),
                           ),
                         ],
@@ -95,7 +99,7 @@ Widget _buildApiCallSimulation(BuildContext context) {
             style: TextStyle(fontSize: 20, color: Colors.blue),
           ),
           onTap: () {
-            context.read<PupsOverviewBloc>().add(LoadPups());
+            context.read<PupsBloc>().add(LoadPups());
           },
         ),
       ],
