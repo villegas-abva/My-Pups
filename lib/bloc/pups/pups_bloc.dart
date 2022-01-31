@@ -10,12 +10,14 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
   final PupsRepository _pupsRepository;
   PupsBloc({required PupsRepository pupsRepository})
       : _pupsRepository = pupsRepository,
-        super(PupsState.initial()) {
+        super(const PupsState.loading()) {
     on<LoadPups>(_onLoadPups);
     on<TogglePup>(_onTogglePup);
   }
 
   void _onLoadPups(LoadPups event, Emitter<PupsState> emit) async {
+    await Future.delayed(const Duration(milliseconds: 1200));
+
     List<Pup> pups = await _pupsRepository.loadPups();
     emit(PupsState.success(pups: pups));
   }
