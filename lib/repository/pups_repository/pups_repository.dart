@@ -10,11 +10,11 @@ class PupsRepository {
     return querySnapshot.docs
         .map(
           (doc) => Pup(
-            name: doc['name'],
-            breed: doc['breed'],
-            age: doc['age'],
-            isSelected: doc['isSelected'],
-          ),
+              name: doc['name'],
+              breed: doc['breed'],
+              age: doc['age'],
+              isSelected: doc['isSelected'],
+              imageUrl: doc['image_url']),
         )
         .toList();
   }

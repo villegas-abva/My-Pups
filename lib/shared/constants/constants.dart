@@ -8,16 +8,12 @@ class AppImages {
           {String prefix = images, String ext = 'png'}) =>
       '$prefix/$key.$ext';
 
-  static final String luna_image = _image('lunita');
-
-  static final String marito_image = _image('marito');
-
   static final String juanito_image = _image('juanito');
 }
 
 abstract class AppTextStyles {
   static const RedHat = TextStyle(
-      fontFamily: 'RedHat', fontSize: 30, fontWeight: FontWeight.w600);
+      fontFamily: 'RedHat', fontSize: 30, fontWeight: FontWeight.w300);
   static const Dongle = TextStyle(
-      fontFamily: 'Dongle', fontSize: 30, fontWeight: FontWeight.w400);
+      fontFamily: 'Dongle', fontSize: 30, fontWeight: FontWeight.w600);
 }

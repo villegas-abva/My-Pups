@@ -6,27 +6,32 @@ import 'package:equatable/equatable.dart';
 class Pup extends Equatable {
   final String name;
   final String breed;
+  final String imageUrl;
+
   final int age;
   final bool isSelected;
 
-  const Pup(
-      {required this.name,
-      required this.breed,
-      required this.age,
-      required this.isSelected});
+  const Pup({
+    required this.name,
+    required this.breed,
+    required this.age,
+    required this.isSelected,
+    required this.imageUrl,
+  });
 
   Pup copyWith({
     String? name,
     String? breed,
+    String? imageUrl,
     int? age,
     bool? isSelected,
   }) {
     return Pup(
-      name: name ?? this.name,
-      breed: breed ?? this.breed,
-      age: age ?? this.age,
-      isSelected: isSelected ?? this.isSelected,
-    );
+        name: name ?? this.name,
+        breed: breed ?? this.breed,
+        age: age ?? this.age,
+        isSelected: isSelected ?? this.isSelected,
+        imageUrl: imageUrl ?? this.imageUrl);
   }
 
   Map<String, dynamic> toMap() {
@@ -44,6 +49,7 @@ class Pup extends Equatable {
     return Pup(
       name: map['name'] ?? '',
       breed: map['breed'] ?? '',
+      imageUrl: map['imageUrl'] ?? '',
       age: map['age']?.toInt() ?? 0,
       isSelected: map['isSelected'] ?? false,
     );
@@ -62,6 +68,7 @@ class Pup extends Equatable {
     Pup pup = Pup(
       name: snapshot['name'],
       breed: snapshot['breed'],
+      imageUrl: snapshot['imageUrl'] ?? '',
       age: snapshot['age'],
       isSelected: snapshot['isSelected'],
     );

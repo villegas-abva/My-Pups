@@ -16,7 +16,7 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
   }
 
   void _onLoadPups(LoadPups event, Emitter<PupsState> emit) async {
-    await Future.delayed(const Duration(milliseconds: 1200));
+    await Future.delayed(const Duration(milliseconds: 2400));
 
     List<Pup> pups = await _pupsRepository.loadPups();
     emit(PupsState.success(pups: pups));
