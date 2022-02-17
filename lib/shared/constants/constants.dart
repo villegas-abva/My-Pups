@@ -8,7 +8,8 @@ class AppImages {
           {String prefix = images, String ext = 'png'}) =>
       '$prefix/$key.$ext';
 
-  static final String juanito_image = _image('juanito');
+  // static final String juanito_image = _image('juanito');
+  static const String juanito_image = 'assets/images/juanito.png';
 }
 
 abstract class AppTextStyles {
