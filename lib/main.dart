@@ -12,5 +12,5 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  runApp(const MyPupsApp());
+  runApp(MyPupsApp());
 }

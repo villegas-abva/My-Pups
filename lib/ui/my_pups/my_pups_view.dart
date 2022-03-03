@@ -36,37 +36,11 @@ class _MyPupsViewState extends State<MyPupsView> {
               return const SizedBox.shrink();
             case PupsStatus.success:
               return _buildHomeBody(context, state);
-            // return _buildBody(context, state);
           }
         },
       ),
     );
   }
-}
-
-Widget _buildBody(context, state) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 5.0),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          'My pups',
-          textAlign: TextAlign.center,
-          style: AppTextStyles.Dongle.copyWith(fontSize: 55),
-        ),
-        Expanded(
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: state.pups.length,
-              itemBuilder: (context, index) {
-                var pup = state.pups[index];
-                return _buildCard(context: context, pup: pup);
-              }),
-        ),
-      ],
-    ),
-  );
 }
 
 Padding _buildCard({required BuildContext context, required Pup pup}) {
@@ -137,15 +111,35 @@ Padding _buildCard({required BuildContext context, required Pup pup}) {
 Widget _buildHomeBody(context, state) {
   return Scaffold(
     appBar: AppBar(
-      title: Text('My Pups'),
+      title: const Text('My Pups'),
+      backgroundColor: Colors.black,
     ),
     body: Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // Text(
-        //   'My pups',
-        //   textAlign: TextAlign.center,
-        //   style: AppTextStyles.Dongle.copyWith(fontSize: 35),
-        // ),
+        Container(
+          margin: const EdgeInsets.only(top: 10, right: 10),
+          child: GestureDetector(
+            // add a new pup
+            onTap: () {},
+            child: const Icon(
+              Icons.add_a_photo_rounded,
+              size: 35,
+            ),
+          ),
+        ),
+        const SizedBox(height: 25),
+        const Center(
+          child: Text(
+            'All your pups\' records in once place',
+            style: TextStyle(
+                fontSize: 30,
+                fontFamily: 'RedHat',
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const SizedBox(height: 40),
         SizedBox(
           height: 350,
           width: double.infinity,
@@ -158,11 +152,7 @@ Widget _buildHomeBody(context, state) {
                 return _buildCard(context: context, pup: pup);
               }),
         ),
-        SizedBox(height: 100),
-        Icon(
-          Icons.add_a_photo_rounded,
-          size: 50,
-        ),
+        const SizedBox(height: 100),
       ],
     ),
   );
