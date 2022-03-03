@@ -14,26 +14,24 @@ class PupsState extends Equatable {
   });
 
 // copyWith
-  PupsState copyWith({
-    List<Pup>? newPups,
-  }) {
+  PupsState copyWith({List<Pup>? newPups, String? newMessage}) {
     return PupsState._(
       pups: newPups ?? pups,
       status: status,
-      errorMessage: errorMessage ?? errorMessage,
+      errorMessage: newMessage ?? errorMessage,
     );
   }
 
   // cases
   const PupsState.initial() : this._(status: PupsStatus.initial);
   const PupsState.loading() : this._(status: PupsStatus.loading);
-  const PupsState.success({required List<Pup> pups})
-      : this._(errorMessage: null, status: PupsStatus.success, pups: pups);
+  const PupsState.success({required List<Pup> pups, required String message})
+      : this._(errorMessage: message, status: PupsStatus.success, pups: pups);
   const PupsState.error({required String errorMessage})
       : this._(errorMessage: errorMessage, status: PupsStatus.error);
   const PupsState.empty() : this._(status: PupsStatus.empty);
 
   // props
   @override
-  List<Object?> get props => [status, pups];
+  List<Object?> get props => [status, pups, errorMessage];
 }

@@ -19,10 +19,10 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
     await Future.delayed(const Duration(milliseconds: 2400));
 
     List<Pup> pups = await _pupsRepository.loadPups();
-    emit(PupsState.success(pups: pups));
+    emit(PupsState.success(pups: pups, message: ''));
   }
 
-  void _onTogglePup(TogglePup event, Emitter<PupsState> emit) {
+  void _onTogglePup(TogglePup event, Emitter<PupsState> emit) async {
     final newPups = state.pups.map((pup) {
       if (pup == event.pup) {
         return pup.copyWith(isSelected: !event.pup.isSelected);
@@ -30,7 +30,6 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
         return pup;
       }
     }).toList();
-    final newState = state.copyWith(newPups: newPups);
-    emit(newState);
+    emit(state.copyWith(newPups: newPups));
   }
 }
