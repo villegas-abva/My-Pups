@@ -4,6 +4,7 @@ import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup.dart';
 import 'package:my_pups/shared/constants/constants.dart';
 import 'package:my_pups/shared/widgets/loading_widget.dart';
+import 'package:my_pups/ui/pup_details/pup_details_screen.dart';
 
 class MyPupsView extends StatefulWidget {
   const MyPupsView({Key? key}) : super(key: key);
@@ -48,7 +49,9 @@ Padding _buildCard({required BuildContext context, required Pup pup}) {
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
     child: GestureDetector(
       onTap: () {
-        context.read<PupsBloc>().add(TogglePup(pup: pup));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => PupDetailsPage(pup: pup)));
+        // context.read<PupsBloc>().add(TogglePup(pup: pup));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -118,7 +121,7 @@ Widget _buildHomeBody(context, state) {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 10, right: 10),
+          margin: const EdgeInsets.only(top: 10, right: 20),
           child: GestureDetector(
             // add a new pup
             onTap: () {},
@@ -133,7 +136,7 @@ Widget _buildHomeBody(context, state) {
           child: Text(
             'All your pups\' records in once place',
             style: TextStyle(
-                fontSize: 30,
+                fontSize: 25,
                 fontFamily: 'RedHat',
                 fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
