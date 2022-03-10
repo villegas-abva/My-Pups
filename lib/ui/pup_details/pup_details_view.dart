@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup.dart';
+import 'package:my_pups/shared/widgets/actions_widget.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 
@@ -204,12 +204,12 @@ Widget _buildBottomSheet(BuildContext context, Pup pup) {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildBottomSheetOption(
+              ActionsWidget(
                 icon: Icons.edit,
                 text: 'Edit Pup',
                 onTap: () {},
               ),
-              _buildBottomSheetOption(
+              ActionsWidget(
                 icon: Icons.delete,
                 text: 'Delete Pup',
                 onTap: () {
@@ -218,28 +218,6 @@ Widget _buildBottomSheet(BuildContext context, Pup pup) {
               ),
             ],
           ),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget _buildBottomSheetOption(
-    {required IconData icon, required String text, required Function onTap}) {
-  return GestureDetector(
-    onTap: onTap(),
-    child: Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.8),
-        border: Border.all(width: 3, color: Colors.red.withOpacity(0.7)),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: Colors.white),
-          const SizedBox(height: 5),
-          AppRegularText(text: text, color: Colors.white)
         ],
       ),
     ),
