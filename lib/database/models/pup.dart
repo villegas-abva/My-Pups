@@ -7,12 +7,13 @@ class Pup extends Equatable {
   final String name;
   final String breed;
   final String imageUrl;
-
+  final String id;
   final int age;
   final bool isSelected;
 
   const Pup({
     required this.name,
+    required this.id,
     required this.breed,
     required this.age,
     required this.isSelected,
@@ -25,13 +26,15 @@ class Pup extends Equatable {
     String? imageUrl,
     int? age,
     bool? isSelected,
+    String? id,
   }) {
     return Pup(
         name: name ?? this.name,
         breed: breed ?? this.breed,
         age: age ?? this.age,
         isSelected: isSelected ?? this.isSelected,
-        imageUrl: imageUrl ?? this.imageUrl);
+        imageUrl: imageUrl ?? this.imageUrl,
+        id: id ?? this.id);
   }
 
   Map<String, dynamic> toMap() {
@@ -52,6 +55,7 @@ class Pup extends Equatable {
       imageUrl: map['imageUrl'] ?? '',
       age: map['age']?.toInt() ?? 0,
       isSelected: map['isSelected'] ?? false,
+      id: map['id'] ?? '',
     );
   }
 
@@ -71,6 +75,7 @@ class Pup extends Equatable {
       imageUrl: snapshot['imageUrl'] ?? '',
       age: snapshot['age'],
       isSelected: snapshot['isSelected'],
+      id: snapshot['id'] ?? '',
     );
     return pup;
   }
