@@ -19,7 +19,9 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.0.1
   flutter_snake_navigationbar: ^0.6.0
+  fluttertoast: ^8.0.9
   freezed: ^1.1.0
+  freezed_annotation: ^1.1.0
   http: ^0.13.4
 
 dev_dependencies:
