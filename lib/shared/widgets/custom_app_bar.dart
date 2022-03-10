@@ -7,6 +7,7 @@ class CustomAppBar extends StatelessWidget {
   final bool? hasRightIcon;
   final IconData? leftIcon;
   final IconData? rightIcon;
+  final VoidCallback? rightIconTap;
 
   const CustomAppBar(
       {Key? key,
@@ -14,7 +15,8 @@ class CustomAppBar extends StatelessWidget {
       this.hasBackButton = false,
       this.hasRightIcon = false,
       this.leftIcon = Icons.arrow_back_ios,
-      this.rightIcon = Icons.email})
+      this.rightIcon = Icons.email,
+      this.rightIconTap})
       : super(key: key);
 
   @override
@@ -32,7 +34,10 @@ class CustomAppBar extends StatelessWidget {
           ? [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Icon(rightIcon, color: Colors.black),
+                child: GestureDetector(
+                  onTap: rightIconTap,
+                  child: Icon(rightIcon, color: Colors.black),
+                ),
               ),
             ]
           : [],

@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup.dart';
 import 'package:my_pups/shared/constants/constants.dart';
+import 'package:my_pups/shared/widgets/actions_widget.dart';
+import 'package:my_pups/shared/widgets/custom_app_bar.dart';
 import 'package:my_pups/shared/widgets/loading_widget.dart';
+import 'package:my_pups/ui/add_pup/add_pup_screen.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/common/widgets/text_form_field/app_textform_field.dart';
@@ -72,9 +75,20 @@ class _MyPupsBodyState extends State<MyPupsBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Pups'),
-        backgroundColor: Colors.black,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: CustomAppBar(
+            title: 'My Pups',
+            hasRightIcon: true,
+            rightIcon: Icons.add,
+            rightIconTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddPupScreen(),
+                ),
+              );
+            }),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -86,29 +100,37 @@ class _MyPupsBodyState extends State<MyPupsBody> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 10, right: 20),
-                  child: GestureDetector(
-                    // add a new pup
-                    onTap: () {
-                      context.read<PupsBloc>().add(AddPup());
-                    },
-                    child: const Icon(
-                      Icons.add_a_photo_rounded,
-                      size: 35,
-                    ),
-                  ),
-                ),
+                // Container(
+                //   margin: const EdgeInsets.only(top: 10, right: 20),
+                //   child: ActionsWidget(
+                //     text: 'Add Pup',
+                //     onTap: () {
+                //       // context.read<PupsBloc>().add(AddPup());
+                //     },
+                //     icon: Icons.add_a_photo_rounded,
+                //   ),
+                // ),
+                // child: GestureDetector(
+                //   // add a new pup
+                //   onTap: () {
+                //     context.read<PupsBloc>().add(AddPup());
+                //   },
+                //   child: const Icon(
+                //     Icons.add_a_photo_rounded,
+                //     size: 35,
+                //   ),
+                // ),
+
                 const SizedBox(height: 15),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: AppLargeText(
-                      text: 'All your pups\'s records in one place',
-                      color: Colors.red),
-                ),
+                // const Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 20.0),
+                //   child: AppRegularText(
+                //       text: 'All your pups\'s records in one place',
+                //       color: Colors.red),
+                // ),
                 const SizedBox(height: 10),
                 SizedBox(
-                  height: 350,
+                  height: 280,
                   width: double.infinity,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -116,10 +138,10 @@ class _MyPupsBodyState extends State<MyPupsBody> {
                       itemCount: widget.state.pups.length,
                       itemBuilder: (context, index) {
                         var pup = widget.state.pups[index];
-                        return _buildCard(context: context, pup: pup);
+                        return _buildPupCard(context: context, pup: pup);
                       }),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
               ],
             ),
             Padding(
@@ -127,6 +149,11 @@ class _MyPupsBodyState extends State<MyPupsBody> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const AppRegularText(
+                    text: 'Don\'t have a vet yet?',
+                    color: Colors.red,
+                    size: 16,
+                  ),
                   const AppLargeText(
                     text: 'Search pet clinics nearby',
                     size: 20,
@@ -142,7 +169,7 @@ class _MyPupsBodyState extends State<MyPupsBody> {
                     child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            color: Colors.red,
+                            color: Colors.blue,
                             borderRadius: BorderRadius.circular(20)),
                         child: const AppRegularText(
                             text: 'Search', color: Colors.white)),
@@ -158,7 +185,7 @@ class _MyPupsBodyState extends State<MyPupsBody> {
   }
 }
 
-Widget _buildCard({required BuildContext context, required Pup pup}) {
+Widget _buildPupCard({required BuildContext context, required Pup pup}) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
     child: GestureDetector(
@@ -172,59 +199,40 @@ Widget _buildCard({required BuildContext context, required Pup pup}) {
           ),
         );
       },
-      child: Container(
-        decoration: BoxDecoration(
-          color: pup.isSelected ? Colors.red : Colors.grey,
-          border: Border.all(width: pup.isSelected ? 4 : 2),
-          borderRadius: BorderRadius.circular(30),
-          image: DecorationImage(
-            image: NetworkImage(
-              pup.imageUrl,
+      child: Column(
+        children: [
+          Container(
+            height: 200,
+            width: 200,
+            decoration: BoxDecoration(
+              color: pup.isSelected ? Colors.red : Colors.grey,
+              border: Border.all(width: pup.isSelected ? 4 : 2),
+              borderRadius: BorderRadius.circular(30),
+              image: DecorationImage(
+                image: NetworkImage(
+                  pup.imageUrl,
+                ),
+                fit: BoxFit.cover,
+              ),
             ),
-            fit: BoxFit.cover,
-            colorFilter:
-                ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.xor),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                pup.name,
-                style: AppTextStyles.Dongle.copyWith(
-                    fontSize: 70, color: Colors.white),
+          const SizedBox(height: 5),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            width: 200,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Center(
+              child: AppRegularText(
+                text: pup.name,
+                size: 22,
+                color: Colors.white,
               ),
-              const SizedBox(height: 5),
-              RichText(
-                text: TextSpan(
-                    text: 'breed: ',
-                    style: AppTextStyles.RedHat.copyWith(fontSize: 22),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: pup.breed,
-                        style:
-                            AppTextStyles.RedHat.copyWith(color: Colors.white),
-                      ),
-                    ]),
-              ),
-              const SizedBox(height: 5),
-              RichText(
-                text: TextSpan(
-                    text: 'age: ',
-                    style: AppTextStyles.RedHat.copyWith(fontSize: 22),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: pup.age.toString(),
-                        style:
-                            AppTextStyles.RedHat.copyWith(color: Colors.white),
-                      ),
-                    ]),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     ),
   );
