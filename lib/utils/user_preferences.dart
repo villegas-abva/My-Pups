@@ -7,7 +7,7 @@ class UserPreferences {
     name: 'Juanito',
     email: 'juanito@jones.com',
     about:
-        'Un perrito Chiweenie. Tiene 6 meses de edad pero sigue haciendo popo mas de 60% de las veces. Pero es bien tierno y le gusta sonreir. Definitivamente la mascota perfecta, aunque necesita un poco de mano dura.',
+        'Un perrito Chiweenie. Tiene 6 meses de edad pero se sigue haciendo popo mas de 60% de las veces dentro de la casa. Pero es bien tierno y le gusta sonreir. Definitivamente la mascota perfecta, aunque necesita un poco de mano dura.',
     isDarkMode: false,
   );
 }
