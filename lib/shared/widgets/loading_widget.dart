@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pups/shared/constants/constants.dart';
+import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
+import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 
 class LoadingWidget extends StatefulWidget {
   final String? text;
@@ -77,15 +79,11 @@ class _LoadingWidgetState extends State<LoadingWidget>
                 );
               },
             ),
-            SizedBox(height: height * 0.0015),
-            Text(
-              widget.text ?? 'Loading Pups...',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.Dongle.copyWith(
-                fontSize: 60,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+            SizedBox(height: height * 0.0025),
+            const AppRegularText(
+              text: 'Loading Pups...',
+              size: 30,
+            )
           ],
         ),
       ),
