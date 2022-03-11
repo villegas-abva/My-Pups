@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_pups/database/models/user.dart';
 import 'package:my_pups/shared/constants/constants.dart';
+import 'package:my_pups/shared/widgets/custom_app_bar.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/profile/widgets/numbers_widget.dart';
@@ -21,13 +22,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final user = UserPreferences.myUser;
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: ProfileAppbarWidget(context: context),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomAppBar(
+          title: 'My Profile',
+          hasRightIcon: true,
+          rightIcon: CupertinoIcons.moon_stars,
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(height: 15),
           ProfileWidget(
             imagePath: user.imagePath,
             onClicked: () async {},
