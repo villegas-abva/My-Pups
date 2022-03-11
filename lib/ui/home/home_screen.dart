@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:my_pups/bloc/nav/app_nav_cubit.dart';
-import 'package:my_pups/ui/my_profile/my_profile_screen.dart';
 import 'package:my_pups/ui/my_pups/my_pups_screen.dart';
+import 'package:my_pups/ui/my_pups/my_pups_view.dart';
+import 'package:my_pups/ui/profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   int pageIndex;
@@ -18,8 +19,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final screens = [
-    const MyPupsScreen(),
-    const MyProfileScren(),
+    const MyPupsView(),
+    const ProfileScreen(),
   ];
 
   ShapeBorder? bottomBarShape = const RoundedRectangleBorder(
@@ -44,31 +45,19 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       extendBody: true,
-      // body: screens[_selectedItemPosition],
       body: screens[widget.pageIndex],
-
       bottomNavigationBar: SnakeNavigationBar.color(
-        // height: 80,
         behaviour: snakeBarStyle,
         snakeShape: snakeShape,
         shape: bottomBarShape,
-
-        ///configuration for SnakeNavigationBar
         snakeViewColor: selectedColor,
         selectedItemColor:
             snakeShape == SnakeShape.indicator ? selectedColor : null,
         unselectedItemColor: unselectedColor,
-
         showUnselectedLabels: showUnselectedLabels,
         showSelectedLabels: showSelectedLabels,
-
         currentIndex: widget.pageIndex,
-
-        // currentIndex: _selectedItemPosition,
-        // onTap: (index) => setState(() => _selectedItemPosition = index),
         onTap: (index) => setState(() => widget.pageIndex = index),
-        // onTap: _onPageChanged,
-
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'My pups'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
@@ -83,13 +72,10 @@ class _HomeScreenState extends State<HomeScreen> {
     switch (page) {
       case 0:
         print(page.toString());
-        // BlocProvider.of<AppCubits>(context).myPupsPage();
 
         setState(() {});
         break;
       case 1:
-        // BlocProvider.of<AppCubits>(context).myProfilePage();
-
         print(page.toString());
 
         setState(() {});

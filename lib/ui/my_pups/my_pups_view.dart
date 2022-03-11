@@ -22,11 +22,11 @@ class MyPupsView extends StatefulWidget {
 
 class _MyPupsViewState extends State<MyPupsView>
     with AutomaticKeepAliveClientMixin<MyPupsView> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<PupsBloc>().add(LoadPups());
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   context.read<PupsBloc>().add(LoadPups());
+  // }
 
   @override
   bool get wantKeepAlive => true;
@@ -75,8 +75,9 @@ class _MyPupsBodyState extends State<MyPupsBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black.withOpacity(0.2),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: const Size.fromHeight(50),
         child: CustomAppBar(
             title: 'My Pups',
             hasRightIcon: true,
@@ -100,34 +101,7 @@ class _MyPupsBodyState extends State<MyPupsBody> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // Container(
-                //   margin: const EdgeInsets.only(top: 10, right: 20),
-                //   child: ActionsWidget(
-                //     text: 'Add Pup',
-                //     onTap: () {
-                //       // context.read<PupsBloc>().add(AddPup());
-                //     },
-                //     icon: Icons.add_a_photo_rounded,
-                //   ),
-                // ),
-                // child: GestureDetector(
-                //   // add a new pup
-                //   onTap: () {
-                //     context.read<PupsBloc>().add(AddPup());
-                //   },
-                //   child: const Icon(
-                //     Icons.add_a_photo_rounded,
-                //     size: 35,
-                //   ),
-                // ),
-
-                const SizedBox(height: 15),
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: 20.0),
-                //   child: AppRegularText(
-                //       text: 'All your pups\'s records in one place',
-                //       color: Colors.red),
-                // ),
+                const SizedBox(height: 45),
                 const SizedBox(height: 10),
                 SizedBox(
                   height: 280,
