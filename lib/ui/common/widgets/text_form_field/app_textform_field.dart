@@ -26,11 +26,17 @@ class AppTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      // keyboardType: hasNumbers ? TextInputType.number : TextInputType.number,
+      // keyboardType: hasNumbers ? TextInputType.number ,
       controller: controller,
       obscureText: isPassword ? true : false,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'This field cannot be empy';
+        }
+        return null;
+      },
       decoration: InputDecoration(
-        prefixIconColor: Colors.green,
+        prefixIconColor: Colors.red,
         prefixIcon: hasPrefixIcon ? Icon(icon) : const SizedBox.shrink(),
         labelText: label,
         labelStyle: TextStyle(color: labelColor, fontFamily: 'RedHat'),
