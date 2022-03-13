@@ -8,7 +8,7 @@ class Pup extends Equatable {
   final String breed;
   final String imageUrl;
   final String id;
-  final int age;
+  final String age;
   final bool isSelected;
 
   const Pup({
@@ -24,7 +24,7 @@ class Pup extends Equatable {
     String? name,
     String? breed,
     String? imageUrl,
-    int? age,
+    String? age,
     bool? isSelected,
     String? id,
   }) {
@@ -53,7 +53,7 @@ class Pup extends Equatable {
       name: map['name'] ?? '',
       breed: map['breed'] ?? '',
       imageUrl: map['imageUrl'] ?? '',
-      age: map['age']?.toInt() ?? 0,
+      age: map['age'] ?? '',
       isSelected: map['isSelected'] ?? false,
       id: map['id'] ?? '',
     );
@@ -72,7 +72,7 @@ class Pup extends Equatable {
     Pup pup = Pup(
       name: snapshot['name'],
       breed: snapshot['breed'],
-      imageUrl: snapshot['imageUrl'] ?? '',
+      imageUrl: snapshot['image_url'] ?? '',
       age: snapshot['age'],
       isSelected: snapshot['isSelected'],
       id: snapshot['id'] ?? '',
