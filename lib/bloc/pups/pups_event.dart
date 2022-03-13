@@ -9,6 +9,14 @@ class LoadPups extends PupsEvent {
   List<Object> get props => [];
 }
 
+class UpdatePups extends PupsEvent {
+  late final List<Pup> pups;
+  UpdatePups({required this.pups});
+
+  @override
+  List<Object> get props => [pups];
+}
+
 class TogglePup extends PupsEvent {
   final Pup pup;
   const TogglePup({required this.pup});
@@ -18,12 +26,11 @@ class TogglePup extends PupsEvent {
 }
 
 class AddPup extends PupsEvent {
-  const AddPup();
-  // final Pup pup;
-  // const AddPup({required this.pup});
+  final Pup pup;
+  const AddPup({required this.pup});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [pup];
 }
 
 class DeletePup extends PupsEvent {

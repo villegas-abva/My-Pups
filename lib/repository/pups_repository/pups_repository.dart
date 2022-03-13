@@ -21,18 +21,21 @@ class PupsRepository {
         .toList();
   }
 
-  Future addPup() async {
+  Future addPup({required Pup pup}) async {
     try {
       final docId = _pupsCollection.doc();
       print('docId: $docId');
       await _pupsCollection.add({
-        'age': 1,
-        'breed': 'Unknown',
+        // 'age': 1,
+        'age': pup.age,
+        // 'breed': 'Unknown',
+        'breed': pup.breed,
         'id': docId.id,
         'image_url':
             'https://firebasestorage.googleapis.com/v0/b/my-pups-36a9a.appspot.com/o/my_pups%2Fdog_incognito.jpg.webp?alt=media&token=9b92f4eb-ee0b-4bd2-b3a7-c8e35608caee',
         'isSelected': false,
-        'name': 'New Pup',
+        // 'name': 'New Pup',
+        'name': pup.name
       });
     } catch (e) {}
   }
@@ -47,5 +50,13 @@ class PupsRepository {
 //    }).whenComplete(() => Navigator.pop(context));
 
     } catch (e) {}
+  }
+
+  Stream<List<Pup>> getAllPups() {
+    return _pupsCollection.snapshots().map(
+      (snapshot) {
+        return snapshot.docs.map((doc) => Pup.pupFromSnapshot(doc)).toList();
+      },
+    );
   }
 }

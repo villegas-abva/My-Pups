@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:my_pups/database/models/pup.dart';
@@ -8,28 +10,35 @@ part 'pups_state.dart';
 
 class PupsBloc extends Bloc<PupsEvent, PupsState> {
   final PupsRepository _pupsRepository;
+  StreamSubscription? _pupsSubscription;
+
   PupsBloc({required PupsRepository pupsRepository})
       : _pupsRepository = pupsRepository,
         super(const PupsState.initial()) {
     on<LoadPups>(_onLoadPups);
+    on<UpdatePups>(_onUpdatePups);
     on<TogglePup>(_onTogglePup);
     on<AddPup>(_onAddPup);
     on<DeletePup>(_onDeletePup);
   }
   late final List<Pup> pups;
 
-  /// Loads List<Pup> from Firebase collection
+  /// Loads a Stream: List<Pup> from Firebase collection
+  /// This method passes the List<Pup> to UPDATE PUPS
   // TODO: make these specific to user
   void _onLoadPups(LoadPups event, Emitter<PupsState> emit) async {
-    if (state.status == PupsStatus.initial) {
-      emit(const PupsState.loading());
+    // emit(const PupsState.loading());
+    // await Future.delayed(const Duration(milliseconds: 2400));
+    _pupsSubscription?.cancel();
+    _pupsSubscription = _pupsRepository.getAllPups().listen((data) {
+      add((UpdatePups(pups: data)));
+    });
+  }
 
-      await Future.delayed(const Duration(milliseconds: 2400));
-      pups = await _pupsRepository.loadPups();
-      emit(PupsState.success(pups: pups, message: ''));
-    } else if (state.status == PupsStatus.success) {
-      emit(PupsState.success(pups: pups, message: ''));
-    }
+  /// Receives the Stream of List<Pup> from Load Pups event
+  /// Emits the state with the updated list
+  void _onUpdatePups(UpdatePups event, Emitter<PupsState> emit) async {
+    emit(PupsState.success(pups: event.pups, message: ''));
   }
 
   void _onTogglePup(TogglePup event, Emitter<PupsState> emit) async {
@@ -44,7 +53,7 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
   }
 
   void _onAddPup(AddPup event, Emitter<PupsState> emit) async {
-    await _pupsRepository.addPup();
+    await _pupsRepository.addPup(pup: event.pup);
     emit(state.copyWith());
   }
 
