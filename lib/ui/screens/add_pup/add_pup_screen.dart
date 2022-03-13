@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
+import 'package:my_pups/database/models/pup.dart';
+import 'package:my_pups/database/models/user.dart';
 import 'package:my_pups/repository/pups_repository/pups_repository.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
@@ -28,8 +30,15 @@ class AddPupView extends StatefulWidget {
 
 class _AddPupViewState extends State<AddPupView> {
   final _formKey = GlobalKey<FormState>();
+  // final TextEditingController ageController = TextEditingController();
+  // final TextEditingController nameController = TextEditingController();
+  // final TextEditingController breedController = TextEditingController();
+  // final TextEditingController ownerController = TextEditingController();
+  // final TextEditingController petClinicController = TextEditingController();
+  // final TextEditingController lastVisitController = TextEditingController();
+  // final TextEditingController nextVisitController = TextEditingController();
+  // final TextEditingController vetNotesController = TextEditingController();
 
-  final TextEditingController controller = TextEditingController();
   List<dynamic> pupFields = [
     'Name',
     'Age',
@@ -41,7 +50,11 @@ class _AddPupViewState extends State<AddPupView> {
     // 'Next vet visit',
     // 'Vet\'s Notes'
   ];
-  // List<TextEditingController> controllersList = [TextEditingController nameController, TextEditingController ageController,];
+
+  /// return a list of controllers for each pupField
+  late final controllers = pupFields.map((pupField) {
+    return TextEditingController();
+  }).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +86,7 @@ class _AddPupViewState extends State<AddPupView> {
                       ),
                       AppTextFormField(
                         label: pupFields[index],
-                        controller: controller,
-                        // controller: controllersList[index],
-                        // controller: controller,
+                        controller: controllers[index],
                         borderColor: Colors.pinkAccent.withOpacity(0.9),
                       ),
                     ],
@@ -86,11 +97,11 @@ class _AddPupViewState extends State<AddPupView> {
             Expanded(
               child: TextButton(
                 child: Container(
-                  // height: 50,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                      color: Colors.pinkAccent.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(20)),
+                    color: Colors.pinkAccent.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: const Center(
                     child: AppRegularText(
                       text: 'Add Pup',
@@ -100,11 +111,36 @@ class _AddPupViewState extends State<AddPupView> {
                   ),
                 ),
                 onPressed: () {
+                  final pup = Pup(
+                    name: controllers[0].text,
+                    age: controllers[1].text,
+                    breed: controllers[2].text,
+// owner: controllers[3].text,
+                    imageUrl: '',
+                    id: '',
+
+                    isSelected: false,
+                  );
+
                   if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
-                    // context.read<PupsBloc>().add(const AddPup());
+                    try {
+                      print(pup);
+                      context.read<PupsBloc>().add(
+                            AddPup(pup: pup),
+                          );
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Pup Added successfully'),
+                        ),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Error adding pup'),
+                        ),
+                      );
+                    }
                   }
                 },
               ),
