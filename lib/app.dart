@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_pups/auth.dart';
 import 'package:my_pups/bloc/nav/app_cubit_logics.dart';
 import 'package:my_pups/bloc/nav/app_nav_cubit.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/repository/pups_repository/pups_repository.dart';
-import 'package:my_pups/ui/add_pup/add_pup_screen.dart';
-import 'package:my_pups/ui/global/profile_global/profile_global_screen.dart';
-import 'package:my_pups/ui/home/home_screen.dart';
-import 'package:my_pups/ui/my_pups/my_pups_view.dart';
-import 'package:my_pups/ui/profile/profile_screen.dart';
+import 'package:my_pups/ui/router/app_router.dart';
+import 'package:my_pups/ui/screens/auth/login/login_screen.dart';
+import 'package:my_pups/ui/screens/auth/register/register_screen.dart';
+import 'package:my_pups/ui/screens/home/home_screen.dart';
 
-class MyPupsApp extends StatelessWidget {
+class MyPupsApp extends StatefulWidget {
   const MyPupsApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyPupsApp> createState() => _MyPupsAppState();
+}
+
+class _MyPupsAppState extends State<MyPupsApp> {
+  // final AppRouter _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // onGenerateRoute: _appRouter.onGenerateRoute,
       debugShowCheckedModeBanner: false,
       home: MultiBlocProvider(
         providers: [
@@ -24,11 +32,15 @@ class MyPupsApp extends StatelessWidget {
                 PupsBloc(pupsRepository: PupsRepository())..add(LoadPups()),
           ),
         ],
-        // child: MyPupsView(),
         child: HomeScreen(
           pageIndex: 0,
         ),
       ),
     );
   }
+
+  // @override
+  // void dispose() {
+  //   _appRouter.dispose();
+  // }
 }
