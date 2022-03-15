@@ -10,7 +10,6 @@ environment:
 
 dependencies:
   bloc_test: ^9.0.3
-  build_runner: ^2.1.7
   cloud_firestore: ^3.1.6
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3
@@ -20,11 +19,14 @@ dependencies:
   flutter_bloc: ^8.0.1
   flutter_snake_navigationbar: ^0.6.0
   fluttertoast: ^8.0.9
-  freezed: ^1.1.0
   freezed_annotation: ^1.1.0
   http: ^0.13.4
 
 dev_dependencies:
+  build_runner: ^2.1.7
+  json_serializable: ^6.1.5
+  freezed: ^1.1.0
+
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
