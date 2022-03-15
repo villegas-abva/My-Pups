@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
-import 'package:my_pups/database/models/pup.dart';
-import 'package:my_pups/database/models/user.dart';
+import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/repository/pups_repository/pups_repository.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
@@ -30,25 +29,19 @@ class AddPupView extends StatefulWidget {
 
 class _AddPupViewState extends State<AddPupView> {
   final _formKey = GlobalKey<FormState>();
-  // final TextEditingController ageController = TextEditingController();
-  // final TextEditingController nameController = TextEditingController();
-  // final TextEditingController breedController = TextEditingController();
-  // final TextEditingController ownerController = TextEditingController();
-  // final TextEditingController petClinicController = TextEditingController();
-  // final TextEditingController lastVisitController = TextEditingController();
-  // final TextEditingController nextVisitController = TextEditingController();
-  // final TextEditingController vetNotesController = TextEditingController();
 
   List<dynamic> pupFields = [
     'Name',
-    'Age',
+    'Sex',
     'Breed',
-    // 'Sex',
+    'Age',
     'Owner',
-    // 'Pet Clinic',
-    // 'Last vet visit',
-    // 'Next vet visit',
-    // 'Vet\'s Notes'
+    // 'Image',
+    'Pet Clinic',
+    'Vet\'s Name',
+    'Vet\'s Notes',
+    'Last Vet Visit',
+    'Next Vet Visit'
   ];
 
   /// return a list of controllers for each pupField
@@ -59,6 +52,7 @@ class _AddPupViewState extends State<AddPupView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomAppBar(
@@ -87,6 +81,8 @@ class _AddPupViewState extends State<AddPupView> {
                       AppTextFormField(
                         label: pupFields[index],
                         controller: controllers[index],
+                        hasOnlyNumbers:
+                            pupFields[index] == 'Age' ? true : false,
                         borderColor: Colors.pinkAccent.withOpacity(0.9),
                       ),
                     ],
@@ -113,18 +109,23 @@ class _AddPupViewState extends State<AddPupView> {
                 onPressed: () {
                   final pup = Pup(
                     name: controllers[0].text,
-                    age: controllers[1].text,
+                    sex: controllers[1].text,
                     breed: controllers[2].text,
-// owner: controllers[3].text,
+                    age: int.parse(controllers[3].text),
+                    // age: int.parse(controllers[3].text),
+                    owner: controllers[4].text,
                     imageUrl: '',
+                    hasClinic: false,
+                    petClinic: controllers[5].text,
+                    vetName: controllers[6].text,
+                    vetNotes: controllers[7].text,
+                    lastVisit: controllers[8].text,
+                    nextVisit: controllers[9].text,
                     id: '',
-
-                    isSelected: false,
                   );
 
                   if (_formKey.currentState!.validate()) {
                     try {
-                      print(pup);
                       context.read<PupsBloc>().add(
                             AddPup(pup: pup),
                           );

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_pups/database/models/pup.dart';
+import 'package:my_pups/database/models/pup/pup.dart';
 
 class PupsRepository {
   final CollectionReference _pupsCollection =
@@ -11,10 +11,17 @@ class PupsRepository {
         .map(
           (doc) => Pup(
             name: doc['name'],
+            sex: doc['sex'],
             breed: doc['breed'],
             age: doc['age'],
-            isSelected: doc['isSelected'],
-            imageUrl: doc['image_url'],
+            owner: doc['owner'],
+            imageUrl: doc['imageUrl'],
+            hasClinic: doc['hasClinic'],
+            petClinic: doc['petClinic'],
+            vetName: doc['vetName'],
+            vetNotes: doc['vetNotes'],
+            lastVisit: doc['lastVisit'],
+            nextVisit: doc['nextVisit'],
             id: doc['id'],
           ),
         )
@@ -28,30 +35,21 @@ class PupsRepository {
       final docId = _pupsCollection.doc().id;
       print('docId: $docId');
       await _pupsCollection.doc(docId).set({
-        // 'age': 1,
-        'age': pup.age,
-        // 'breed': 'Unknown',
+        'name': pup.name,
+        'sex': pup.sex,
         'breed': pup.breed,
-        'id': docId,
-        'image_url':
+        'age': pup.age,
+        'owner': pup.owner,
+        'hasClinic': pup.hasClinic,
+        'petClinic': pup.petClinic,
+        'vetName': pup.vetName,
+        'vetNotes': pup.vetNotes,
+        'lastVisit': pup.lastVisit,
+        'nextVisit': pup.nextVisit,
+        'imageUrl':
             'https://firebasestorage.googleapis.com/v0/b/my-pups-36a9a.appspot.com/o/my_pups%2Fdog_incognito.jpg.webp?alt=media&token=9b92f4eb-ee0b-4bd2-b3a7-c8e35608caee',
-        'isSelected': false,
-        // 'name': 'New Pup',
-        'name': pup.name
+        'id': docId,
       });
-
-      // await _pupsCollection.add({
-      //   // 'age': 1,
-      //   'age': pup.age,
-      //   // 'breed': 'Unknown',
-      //   'breed': pup.breed,
-      //   'id': docId.id,
-      //   'image_url':
-      //       'https://firebasestorage.googleapis.com/v0/b/my-pups-36a9a.appspot.com/o/my_pups%2Fdog_incognito.jpg.webp?alt=media&token=9b92f4eb-ee0b-4bd2-b3a7-c8e35608caee',
-      //   'isSelected': false,
-      //   // 'name': 'New Pup',
-      //   'name': pup.name
-      // });
     } catch (e) {}
   }
 
