@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_pups/database/models/user.dart';
+import 'package:my_pups/database/models/user/user.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';

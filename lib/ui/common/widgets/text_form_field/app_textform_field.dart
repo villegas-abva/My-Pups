@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppTextFormField extends StatelessWidget {
   const AppTextFormField({
@@ -8,7 +9,7 @@ class AppTextFormField extends StatelessWidget {
     this.icon = Icons.search,
     this.borderColor = Colors.black,
     required this.controller,
-    this.hasNumbers = false,
+    this.hasOnlyNumbers = false,
     this.hasPrefixIcon = false,
     this.labelColor = Colors.pinkAccent,
     this.isPassword = false,
@@ -17,7 +18,7 @@ class AppTextFormField extends StatelessWidget {
   final bool hasIcon;
   final IconData? icon;
   final TextEditingController controller;
-  final bool hasNumbers;
+  final bool hasOnlyNumbers;
   final bool hasPrefixIcon;
   final Color borderColor;
   final Color labelColor;
@@ -26,7 +27,11 @@ class AppTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      // keyboardType: hasNumbers ? TextInputType.number ,
+      keyboardType:
+          hasOnlyNumbers ? TextInputType.number : TextInputType.multiline,
+      inputFormatters: hasOnlyNumbers
+          ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
+          : [],
       controller: controller,
       obscureText: isPassword ? true : false,
       validator: (value) {

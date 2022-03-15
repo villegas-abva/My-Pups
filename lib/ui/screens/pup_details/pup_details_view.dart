@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:my_pups/database/models/pup.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_pups/bloc/pups/pups_bloc.dart';
+import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/shared/widgets/actions_widget.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
@@ -57,11 +59,12 @@ class PupDetailsView extends StatelessWidget {
               top: 50,
               child: IconButton(
                 onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return _buildBottomSheet(context, pup);
-                      });
+                  context.read<PupsBloc>().add(DeletePup(pup: pup));
+                  // showModalBottomSheet(
+                  //     context: context,
+                  //     builder: (BuildContext context) {
+                  //       return _buildBottomSheet(context, pup);
+                  //     });
                 },
                 icon: const Icon(
                   Icons.menu,

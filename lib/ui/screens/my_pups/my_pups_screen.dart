@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
-import 'package:my_pups/database/models/pup.dart';
+import 'package:my_pups/database/models/pup/pup.dart';
 
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
 import 'package:my_pups/shared/widgets/loading_widget.dart';
@@ -172,8 +172,10 @@ Widget _buildPupCard({required BuildContext context, required Pup pup}) {
             height: 200,
             width: 200,
             decoration: BoxDecoration(
-              color: pup.isSelected ? Colors.red : Colors.grey,
-              border: Border.all(width: pup.isSelected ? 4 : 2),
+              // color: pup.isSelected ? Colors.red : Colors.grey,
+              // border: Border.all(width: pup.isSelected ? 4 : 2),
+              color: Colors.grey,
+              border: Border.all(width: 3),
               borderRadius: BorderRadius.circular(30),
               image: DecorationImage(
                 image: NetworkImage(

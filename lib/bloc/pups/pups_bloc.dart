@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:my_pups/database/models/pup.dart';
+import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/repository/pups_repository/pups_repository.dart';
 
 part 'pups_event.dart';
@@ -17,7 +17,7 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
         super(const PupsState.initial()) {
     on<LoadPups>(_onLoadPups);
     on<UpdatePups>(_onUpdatePups);
-    on<TogglePup>(_onTogglePup);
+    // on<TogglePup>(_onTogglePup);
     on<AddPup>(_onAddPup);
     on<DeletePup>(_onDeletePup);
   }
@@ -41,16 +41,16 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
     emit(PupsState.success(pups: event.pups, message: ''));
   }
 
-  void _onTogglePup(TogglePup event, Emitter<PupsState> emit) async {
-    final newPups = state.pups.map((pup) {
-      if (pup == event.pup) {
-        return pup.copyWith(isSelected: !event.pup.isSelected);
-      } else {
-        return pup;
-      }
-    }).toList();
-    emit(state.copyWith(newPups: newPups));
-  }
+  // void _onTogglePup(TogglePup event, Emitter<PupsState> emit) async {
+  //   final newPups = state.pups.map((pup) {
+  //     if (pup == event.pup) {
+  //       return pup.copyWith(isSelected: !event.pup.isSelected);
+  //     } else {
+  //       return pup;
+  //     }
+  //   }).toList();
+  //   emit(state.copyWith(newPups: newPups));
+  // }
 
   void _onAddPup(AddPup event, Emitter<PupsState> emit) async {
     await _pupsRepository.addPup(pup: event.pup);

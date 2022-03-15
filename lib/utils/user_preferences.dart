@@ -1,4 +1,4 @@
-import 'package:my_pups/database/models/user.dart';
+import 'package:my_pups/database/models/user/user.dart';
 
 class UserPreferences {
   static const myUser = User(
