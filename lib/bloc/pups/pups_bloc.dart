@@ -54,7 +54,7 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
 
   void _onAddPup(AddPup event, Emitter<PupsState> emit) async {
     await _pupsRepository.addPup(pup: event.pup);
-    emit(PupsState.success(pups: pups, message: ''));
+    // emit(PupsState.success(pups: pups, message: ''));
   }
 
   void _onDeletePup(DeletePup event, Emitter<PupsState> emit) async {

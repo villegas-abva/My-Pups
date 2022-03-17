@@ -14,13 +14,13 @@ class AddPupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<PupsBloc>(
       create: (_) => PupsBloc(pupsRepository: PupsRepository()),
-      child: AddPupView(),
+      child: const AddPupView(),
     );
   }
 }
 
 class AddPupView extends StatefulWidget {
-  AddPupView({
+  const AddPupView({
     Key? key,
   }) : super(key: key);
   @override
@@ -107,25 +107,23 @@ class _AddPupViewState extends State<AddPupView> {
                   ),
                 ),
                 onPressed: () {
-                  final pup = Pup(
-                    name: controllers[0].text,
-                    sex: controllers[1].text,
-                    breed: controllers[2].text,
-                    age: int.parse(controllers[3].text),
-                    // age: int.parse(controllers[3].text),
-                    owner: controllers[4].text,
-                    imageUrl: '',
-                    hasClinic: false,
-                    petClinic: controllers[5].text,
-                    vetName: controllers[6].text,
-                    vetNotes: controllers[7].text,
-                    lastVisit: controllers[8].text,
-                    nextVisit: controllers[9].text,
-                    id: '',
-                  );
-
                   if (_formKey.currentState!.validate()) {
                     try {
+                      final pup = Pup(
+                        name: controllers[0].text,
+                        sex: controllers[1].text,
+                        breed: controllers[2].text,
+                        age: int.parse(controllers[3].text),
+                        owner: controllers[4].text,
+                        imageUrl: '',
+                        hasClinic: false,
+                        petClinic: controllers[5].text,
+                        vetName: controllers[6].text,
+                        vetNotes: controllers[7].text,
+                        lastVisit: controllers[8].text,
+                        nextVisit: controllers[9].text,
+                        id: '',
+                      );
                       context.read<PupsBloc>().add(
                             AddPup(pup: pup),
                           );
@@ -138,7 +136,7 @@ class _AddPupViewState extends State<AddPupView> {
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Error adding pup'),
+                          content: Text('Error adding pup. Please try again.'),
                         ),
                       );
                     }
