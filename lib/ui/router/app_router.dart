@@ -10,6 +10,7 @@ import 'package:my_pups/ui/screens/auth/register/register_screen.dart';
 import 'package:my_pups/ui/screens/edit_pup/edit_pup_screen.dart';
 import 'package:my_pups/ui/screens/home/home_screen.dart';
 import 'package:my_pups/ui/screens/my_pups/my_pups_screen.dart';
+import 'package:my_pups/ui/screens/profile/edit_profile_screen.dart';
 import 'package:my_pups/ui/screens/profile/profile_screen.dart';
 import 'package:my_pups/ui/screens/pup_details/pup_details_screen.dart';
 
@@ -66,6 +67,9 @@ class AppRouter {
       // Profile
       case '/profile':
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
+
+      case '/editProfile':
+        return MaterialPageRoute(builder: (_) => const EditProfileScreen());
 
       default:
         return MaterialPageRoute(
