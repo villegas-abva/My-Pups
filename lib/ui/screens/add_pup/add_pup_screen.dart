@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
@@ -15,7 +19,22 @@ class AddPupScreen extends StatefulWidget {
 }
 
 class _AddPupScreenState extends State<AddPupScreen> {
+  File? image;
   final _formKey = GlobalKey<FormState>();
+
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Failed ot pick image: $e');
+    }
+  }
 
   List<dynamic> pupFields = [
     'Name',
@@ -63,7 +82,7 @@ class _AddPupScreenState extends State<AddPupScreen> {
                   return Column(
                     children: [
                       const SizedBox(
-                        height: 30,
+                        height: 20,
                       ),
                       AppTextFormField(
                         label: pupFields[index],
