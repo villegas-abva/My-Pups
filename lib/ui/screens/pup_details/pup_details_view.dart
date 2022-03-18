@@ -8,8 +8,8 @@ import 'package:my_pups/shared/widgets/actions_widget.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 
-class PupDetailsView extends StatelessWidget {
-  const PupDetailsView({
+class PupDetailsScreen extends StatelessWidget {
+  const PupDetailsScreen({
     Key? key,
     required this.pup,
   }) : super(key: key);
@@ -59,12 +59,11 @@ class PupDetailsView extends StatelessWidget {
               top: 50,
               child: IconButton(
                 onPressed: () {
-                  context.read<PupsBloc>().add(DeletePup(pup: pup));
-                  // showModalBottomSheet(
-                  //     context: context,
-                  //     builder: (BuildContext context) {
-                  //       return _buildBottomSheet(context, pup);
-                  //     });
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext newContext) {
+                        return _buildBottomSheet(context, pup);
+                      });
                 },
                 icon: const Icon(
                   Icons.menu,
@@ -208,13 +207,15 @@ Widget _buildBottomSheet(BuildContext context, Pup pup) {
               ActionsWidget(
                 icon: Icons.edit,
                 text: 'Edit Pup',
-                onTap: () {},
+                onTap: () {
+                  context.read<PupsBloc>().add(EditPup(pup: pup));
+                },
               ),
               ActionsWidget(
                 icon: Icons.delete,
                 text: 'Delete Pup',
                 onTap: () {
-                  // context.read<PupsBloc>().add(DeletePup(pup: pup));
+                  context.read<PupsBloc>().add(DeletePup(pup: pup));
                 },
               ),
             ],

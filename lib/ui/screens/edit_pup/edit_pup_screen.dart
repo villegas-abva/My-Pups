@@ -2,19 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
+import 'package:my_pups/repository/pups_repository/pups_repository.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/common/widgets/text_form_field/app_textform_field.dart';
 
-class AddPupScreen extends StatefulWidget {
-  const AddPupScreen({
+// class EditPupScreen extends StatelessWidget {
+//   const EditPupScreen({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider<PupsBloc>(
+//       create: (_) => PupsBloc(pupsRepository: PupsRepository()),
+//       child: const EditPupView(),
+//     );
+//   }
+// }
+
+class EditPupScreen extends StatefulWidget {
+  const EditPupScreen({
     Key? key,
   }) : super(key: key);
   @override
-  State<AddPupScreen> createState() => _AddPupScreenState();
+  State<EditPupScreen> createState() => _EditPupScreenState();
 }
 
-class _AddPupScreenState extends State<AddPupScreen> {
+class _EditPupScreenState extends State<EditPupScreen> {
   final _formKey = GlobalKey<FormState>();
 
   List<dynamic> pupFields = [
