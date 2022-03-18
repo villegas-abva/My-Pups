@@ -65,8 +65,11 @@ class PupsRepository {
     } catch (e) {}
   }
 
-  Future editPup(String id) async {
+  Future editPup(
+    String id,
+  ) async {
     try {
+      _pupsCollection.doc(id).update({'name': 'updatedPup!'});
 //  update({
 //      'title': title.text,
 //      'content': content.text,
