@@ -11,7 +11,7 @@ import 'package:my_pups/ui/screens/edit_pup/edit_pup_screen.dart';
 import 'package:my_pups/ui/screens/home/home_screen.dart';
 import 'package:my_pups/ui/screens/my_pups/my_pups_screen.dart';
 import 'package:my_pups/ui/screens/profile/profile_screen.dart';
-import 'package:my_pups/ui/screens/pup_details/pup_details_view.dart';
+import 'package:my_pups/ui/screens/pup_details/pup_details_screen.dart';
 
 class AppRouter {
   final PupsBloc _pupsBloc = PupsBloc(pupsRepository: PupsRepository())
