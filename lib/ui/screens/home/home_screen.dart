@@ -73,9 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            SizedBox(height: 80),
+            const SizedBox(height: 80),
             ListTile(
-              title: AppRegularText(
+              title: const AppRegularText(
                 text: 'Pups Page',
                 color: Colors.white,
                 size: 21,
@@ -85,17 +85,15 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              title: AppRegularText(
+              title: const AppRegularText(
                 text: 'Auth Page',
                 color: Colors.white,
                 size: 21,
               ),
               onTap: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => Auth(),
-                  ),
+                  '/auth',
                 );
               },
             ),

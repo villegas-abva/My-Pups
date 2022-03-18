@@ -20,6 +20,7 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
     // on<TogglePup>(_onTogglePup);
     on<AddPup>(_onAddPup);
     on<DeletePup>(_onDeletePup);
+    on<EditPup>(_onEditPup);
   }
   late final List<Pup> pups;
 
@@ -59,6 +60,11 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
 
   void _onDeletePup(DeletePup event, Emitter<PupsState> emit) async {
     await _pupsRepository.deletePup(event.pup.id);
+    // emit(state.copyWith(newPups: pups));
+  }
+
+  void _onEditPup(EditPup event, Emitter<PupsState> emit) async {
+    await _pupsRepository.editPup(event.pup.id);
     // emit(state.copyWith(newPups: pups));
   }
 }

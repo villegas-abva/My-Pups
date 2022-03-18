@@ -76,12 +76,9 @@ class _MyPupsBodyState extends State<MyPupsBody> {
             hasRightIcon: true,
             rightIcon: Icons.add,
             rightIconTap: () {
-              // context.read<PupsBloc>().add(AddPup());
-              Navigator.push(
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => AddPupScreen(),
-                ),
+                '/addPup',
               );
             }),
       ),
@@ -157,14 +154,7 @@ Widget _buildPupCard({required BuildContext context, required Pup pup}) {
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
     child: GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PupDetailsScreen(
-              pup: pup,
-            ),
-          ),
-        );
+        Navigator.pushNamed(context, '/pupDetails', arguments: pup);
       },
       child: Column(
         children: [
@@ -172,8 +162,6 @@ Widget _buildPupCard({required BuildContext context, required Pup pup}) {
             height: 200,
             width: 200,
             decoration: BoxDecoration(
-              // color: pup.isSelected ? Colors.red : Colors.grey,
-              // border: Border.all(width: pup.isSelected ? 4 : 2),
               color: Colors.grey,
               border: Border.all(width: 3),
               borderRadius: BorderRadius.circular(30),
