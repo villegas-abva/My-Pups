@@ -54,10 +54,19 @@ class PupsRepository {
   }
 
   Future deletePup(String id) async {
-    print('this pup id will be dleted: $id');
     try {
       await _pupsCollection.doc(id).delete().then((value) => print('success'));
 
+//  update({
+//      'title': title.text,
+//      'content': content.text,
+//    }).whenComplete(() => Navigator.pop(context));
+
+    } catch (e) {}
+  }
+
+  Future editPup(String id) async {
+    try {
 //  update({
 //      'title': title.text,
 //      'content': content.text,
