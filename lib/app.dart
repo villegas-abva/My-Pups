@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_pups/ui/router/app_router.dart';
+import 'package:my_pups/ui/screens/router/app_router.dart';
 
 class MyPupsApp extends StatefulWidget {
   const MyPupsApp({Key? key}) : super(key: key);

@@ -1,23 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
-import 'package:my_pups/repository/pups_repository/pups_repository.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/common/widgets/text_form_field/app_textform_field.dart';
-
-// class EditPupScreen extends StatelessWidget {
-//   const EditPupScreen({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider<PupsBloc>(
-//       create: (_) => PupsBloc(pupsRepository: PupsRepository()),
-//       child: const EditPupView(),
-//     );
-//   }
-// }
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
 
 class EditPupScreen extends StatefulWidget {
   const EditPupScreen({
@@ -28,7 +21,73 @@ class EditPupScreen extends StatefulWidget {
 }
 
 class _EditPupScreenState extends State<EditPupScreen> {
+  var imageUrl;
+  File? image;
   final _formKey = GlobalKey<FormState>();
+
+  File? _photo;
+  final ImagePicker _picker = ImagePicker();
+
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+
+  Future pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print('Failed ot pick image: $e');
+    }
+  }
+
+  Future imgFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future imgFromCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future uploadFile() async {
+    if (_photo == null) return;
+    final fileName = basename(_photo!.path);
+    final destination = 'my_pups/';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child(fileName);
+
+      final upload = await ref.putFile(_photo!);
+
+      imageUrl = (await upload.ref.getDownloadURL()).toString();
+    } catch (e) {
+      print('error occured');
+    }
+  }
 
   List<dynamic> pupFields = [
     'Name',
@@ -64,19 +123,17 @@ class _EditPupScreenState extends State<EditPupScreen> {
       ),
       body: Form(
         key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: 660,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: pupFields.length,
-                itemBuilder: (context, index) {
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Wrap(
+                children: List.generate(pupFields.length, (index) {
                   return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(
-                        height: 30,
+                        height: 25,
                       ),
                       AppTextFormField(
                         label: pupFields[index],
@@ -87,12 +144,50 @@ class _EditPupScreenState extends State<EditPupScreen> {
                       ),
                     ],
                   );
-                },
+                }),
               ),
-            ),
-            Expanded(
-              child: TextButton(
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      imgFromCamera();
+                      // Navigator.of(context).pop();
+                      // pickImage(ImageSource.camera);
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(width: 2),
+                        ),
+                        height: 70,
+                        child:
+                            Center(child: AppRegularText(text: 'From camera'))),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      imgFromGallery();
+                      // Navigator.of(context).pop();
+                      // pickImage(ImageSource.gallery);
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(width: 2),
+                        ),
+                        height: 70,
+                        child:
+                            Center(child: AppRegularText(text: 'From Galery'))),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              TextButton(
                 child: Container(
+                  height: 60,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.pinkAccent.withOpacity(0.9),
@@ -115,7 +210,7 @@ class _EditPupScreenState extends State<EditPupScreen> {
                         breed: controllers[2].text,
                         age: int.parse(controllers[3].text),
                         owner: controllers[4].text,
-                        imageUrl: '',
+                        imageUrl: imageUrl,
                         hasClinic: false,
                         petClinic: controllers[5].text,
                         vetName: controllers[6].text,
@@ -143,8 +238,8 @@ class _EditPupScreenState extends State<EditPupScreen> {
                   }
                 },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

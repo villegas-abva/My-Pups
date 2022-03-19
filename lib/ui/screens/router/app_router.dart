@@ -22,6 +22,7 @@ class AppRouter {
     switch (routeSettings.name) {
       // Home
       case '/':
+        // return MaterialPageRoute(builder: (_) => const FormTestScreen());
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                 value: _pupsBloc, child: HomeScreen(pageIndex: 0)));
