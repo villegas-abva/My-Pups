@@ -39,14 +39,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSCameraUsageDescription</key>
-	<string>To take user profile image</string>
+   	<string>To take user profile image</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To allow choosing profile image</string>
     <key>NSMicrophoneUsageDescription</key>
 	<string>Used to capture audio for image picker plugin</string>
-
 </dict>
 </plist>
