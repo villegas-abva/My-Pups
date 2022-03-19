@@ -33,7 +33,6 @@ class PupsRepository {
   Future addPup({required Pup pup}) async {
     try {
       final docId = _pupsCollection.doc().id;
-      print('docId: $docId');
       await _pupsCollection.doc(docId).set({
         'name': pup.name,
         'sex': pup.sex,
@@ -46,8 +45,7 @@ class PupsRepository {
         'vetNotes': pup.vetNotes,
         'lastVisit': pup.lastVisit,
         'nextVisit': pup.nextVisit,
-        'imageUrl':
-            'https://firebasestorage.googleapis.com/v0/b/my-pups-36a9a.appspot.com/o/my_pups%2Fdog_incognito.jpg.webp?alt=media&token=9b92f4eb-ee0b-4bd2-b3a7-c8e35608caee',
+        'imageUrl': pup.imageUrl,
         'id': docId,
       });
     } catch (e) {}
@@ -55,13 +53,7 @@ class PupsRepository {
 
   Future deletePup(String id) async {
     try {
-      await _pupsCollection.doc(id).delete().then((value) => print('success'));
-
-//  update({
-//      'title': title.text,
-//      'content': content.text,
-//    }).whenComplete(() => Navigator.pop(context));
-
+      await _pupsCollection.doc(id).delete();
     } catch (e) {}
   }
 
@@ -70,11 +62,6 @@ class PupsRepository {
   ) async {
     try {
       _pupsCollection.doc(id).update({'name': 'updatedPup!'});
-//  update({
-//      'title': title.text,
-//      'content': content.text,
-//    }).whenComplete(() => Navigator.pop(context));
-
     } catch (e) {}
   }
 

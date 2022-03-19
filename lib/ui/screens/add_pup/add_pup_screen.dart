@@ -9,6 +9,8 @@ import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/common/widgets/text_form_field/app_textform_field.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart';
 
 class AddPupScreen extends StatefulWidget {
   const AddPupScreen({
@@ -19,8 +21,15 @@ class AddPupScreen extends StatefulWidget {
 }
 
 class _AddPupScreenState extends State<AddPupScreen> {
+  var imageUrl;
   File? image;
   final _formKey = GlobalKey<FormState>();
+
+  File? _photo;
+  final ImagePicker _picker = ImagePicker();
+
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
 
   Future pickImage(ImageSource source) async {
     try {
@@ -33,6 +42,50 @@ class _AddPupScreenState extends State<AddPupScreen> {
       });
     } on PlatformException catch (e) {
       print('Failed ot pick image: $e');
+    }
+  }
+
+  Future imgFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future imgFromCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future uploadFile() async {
+    if (_photo == null) return;
+    final fileName = basename(_photo!.path);
+    final destination = 'my_pups/';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child(fileName);
+
+      final upload = await ref.putFile(_photo!);
+
+      imageUrl = (await upload.ref.getDownloadURL()).toString();
+    } catch (e) {
+      print('error occured');
     }
   }
 
@@ -70,19 +123,17 @@ class _AddPupScreenState extends State<AddPupScreen> {
       ),
       body: Form(
         key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: 660,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: pupFields.length,
-                itemBuilder: (context, index) {
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Wrap(
+                children: List.generate(pupFields.length, (index) {
                   return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(
-                        height: 20,
+                        height: 25,
                       ),
                       AppTextFormField(
                         label: pupFields[index],
@@ -93,12 +144,50 @@ class _AddPupScreenState extends State<AddPupScreen> {
                       ),
                     ],
                   );
-                },
+                }),
               ),
-            ),
-            Expanded(
-              child: TextButton(
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      imgFromCamera();
+                      // Navigator.of(context).pop();
+                      // pickImage(ImageSource.camera);
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(width: 2),
+                        ),
+                        height: 70,
+                        child:
+                            Center(child: AppRegularText(text: 'From camera'))),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      imgFromGallery();
+                      // Navigator.of(context).pop();
+                      // pickImage(ImageSource.gallery);
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(width: 2),
+                        ),
+                        height: 70,
+                        child:
+                            Center(child: AppRegularText(text: 'From Galery'))),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              TextButton(
                 child: Container(
+                  height: 60,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.pinkAccent.withOpacity(0.9),
@@ -121,7 +210,7 @@ class _AddPupScreenState extends State<AddPupScreen> {
                         breed: controllers[2].text,
                         age: int.parse(controllers[3].text),
                         owner: controllers[4].text,
-                        imageUrl: '',
+                        imageUrl: imageUrl,
                         hasClinic: false,
                         petClinic: controllers[5].text,
                         vetName: controllers[6].text,
@@ -149,8 +238,8 @@ class _AddPupScreenState extends State<AddPupScreen> {
                   }
                 },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
