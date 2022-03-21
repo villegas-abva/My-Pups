@@ -61,9 +61,11 @@ class AppRouter {
                 value: _pupsBloc, child: const AddPupScreen()));
 
       case '/editPup':
+        var data = routeSettings.arguments as Pup;
+
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
-                value: _pupsBloc, child: const EditPupScreen()));
+                value: _pupsBloc, child: EditPupScreen(pup: data)));
 
       // Profile
       case '/profile':
