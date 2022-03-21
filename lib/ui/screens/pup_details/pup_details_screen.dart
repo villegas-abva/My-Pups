@@ -8,13 +8,18 @@ import 'package:my_pups/shared/widgets/actions_widget.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 
-class PupDetailsScreen extends StatelessWidget {
+class PupDetailsScreen extends StatefulWidget {
   const PupDetailsScreen({
     Key? key,
     required this.pup,
   }) : super(key: key);
   final Pup pup;
 
+  @override
+  State<PupDetailsScreen> createState() => _PupDetailsScreenState();
+}
+
+class _PupDetailsScreenState extends State<PupDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +34,7 @@ class PupDetailsScreen extends StatelessWidget {
               height: 350,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(pup.imageUrl),
+                  image: NetworkImage(widget.pup.imageUrl),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -59,11 +64,14 @@ class PupDetailsScreen extends StatelessWidget {
               top: 50,
               child: IconButton(
                 onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext newContext) {
-                        return _buildBottomSheet(context, pup);
-                      });
+                  Navigator.pushNamed(context, '/editPup',
+                      arguments: widget.pup);
+                  // TODO: Implement Modal Bottom Sheet
+                  // showModalBottomSheet(
+                  //     context: context,
+                  //     builder: (BuildContext newContext) {
+                  //       return _buildBottomSheet(context, widget.pup);
+                  //     });
                 },
                 icon: const Icon(
                   Icons.menu,
@@ -93,10 +101,10 @@ class PupDetailsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         AppLargeText(
-                            text: pup.name,
+                            text: widget.pup.name,
                             color: Colors.black.withOpacity(0.8)),
                         AppLargeText(
-                          text: '${pup.age.toString()} years old',
+                          text: '${widget.pup.age.toString()} years old',
                         ),
                       ],
                     ),
@@ -114,7 +122,7 @@ class PupDetailsScreen extends StatelessWidget {
                           width: 5,
                         ),
                         AppRegularText(
-                          text: pup.breed,
+                          text: widget.pup.breed,
                           size: 20,
                         ),
                       ],
@@ -208,7 +216,17 @@ Widget _buildBottomSheet(BuildContext context, Pup pup) {
                 icon: Icons.edit,
                 text: 'Edit Pup',
                 onTap: () {
-                  context.read<PupsBloc>().add(EditPup(pup: pup));
+                  Navigator.pushNamed(
+                    context,
+                    '/editPup',
+                  );
+                  // context.read<PupsBloc>().add(EditPup(pup: pup));
+                  // Navigator.pop(context);
+
+                  // Navigator.pushNamed(
+                  //   context,
+                  //   '/',
+                  // );
                 },
               ),
               ActionsWidget(
@@ -216,6 +234,11 @@ Widget _buildBottomSheet(BuildContext context, Pup pup) {
                 text: 'Delete Pup',
                 onTap: () {
                   context.read<PupsBloc>().add(DeletePup(pup: pup));
+                  Navigator.pop(context);
+                  Navigator.pushNamed(
+                    context,
+                    '/',
+                  );
                 },
               ),
             ],
