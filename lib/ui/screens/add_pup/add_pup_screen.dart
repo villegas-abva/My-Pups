@@ -153,8 +153,10 @@ class _AddPupScreenState extends State<AddPupScreen> {
                   GestureDetector(
                     onTap: () {
                       imgFromCamera();
-                      // Navigator.of(context).pop();
-                      // pickImage(ImageSource.camera);
+                      // Navigator.pushNamed(
+                      //   context,
+                      //   '/',
+                      // );
                     },
                     child: Container(
                         padding: EdgeInsets.all(12),
@@ -163,12 +165,13 @@ class _AddPupScreenState extends State<AddPupScreen> {
                           border: Border.all(width: 2),
                         ),
                         height: 70,
-                        child:
-                            Center(child: AppRegularText(text: 'From camera'))),
+                        child: const Center(
+                            child: AppRegularText(text: 'From camera'))),
                   ),
                   GestureDetector(
                     onTap: () {
                       imgFromGallery();
+
                       // Navigator.of(context).pop();
                       // pickImage(ImageSource.gallery);
                     },
@@ -227,6 +230,10 @@ class _AddPupScreenState extends State<AddPupScreen> {
                         const SnackBar(
                           content: Text('Pup Added successfully'),
                         ),
+                      );
+                      Navigator.pushNamed(
+                        context,
+                        '/',
                       );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(

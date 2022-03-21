@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_pups/database/models/user/user.dart';
+import 'package:my_pups/ui/common/widgets/circular_avatar/circular_avatar_widget.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/screens/profile/widgets/numbers_widget.dart';
-import 'package:my_pups/ui/screens/profile/widgets/profile_widget.dart';
 import 'package:my_pups/utils/user_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 25),
-          ProfileWidget(
+          CircularAvatarWidget(
             imagePath: user.imagePath,
             onClicked: () async {},
           ),
