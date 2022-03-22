@@ -76,6 +76,7 @@ class _PupDetailsScreenState extends State<PupDetailsScreen> {
                 icon: const Icon(
                   Icons.menu,
                   color: Colors.white,
+                  size: 20,
                 ),
               ),
             ),
