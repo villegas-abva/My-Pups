@@ -92,22 +92,6 @@ class _EditPupScreenState extends State<EditPupScreen> {
     }
   }
 
-  List<dynamic> pupFields = [
-    'Name',
-    'Sex',
-    'Breed',
-    'Age',
-    'Owner',
-    // 'Image',
-    'Pet Clinic',
-    'Vet\'s Name',
-    'Vet\'s Notes',
-    'Last Vet Visit',
-    'Next Vet Visit'
-  ];
-
-  /// return a list of controllers for each pupField
-
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> pupMap = {
@@ -202,59 +186,63 @@ class _EditPupScreenState extends State<EditPupScreen> {
                 }),
               ),
               const SizedBox(height: 30),
-              TextButton(
-                child: Container(
-                  height: 60,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.pinkAccent.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Center(
-                    child: AppRegularText(
-                      text: 'Edit Pup',
-                      color: Colors.white,
-                      size: 21,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: TextButton(
+                  child: Container(
+                    height: 60,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.pinkAccent.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(55),
+                    ),
+                    child: const Center(
+                      child: AppRegularText(
+                        text: 'Edit Pup',
+                        color: Colors.white,
+                        size: 21,
+                      ),
                     ),
                   ),
-                ),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // TODO: Edit Pup
-                    try {
-                      final pup = Pup(
-                        name: controllers[0].text,
-                        sex: controllers[1].text,
-                        breed: controllers[2].text,
-                        age: int.parse(controllers[3].text),
-                        owner: controllers[4].text,
-                        imageUrl: imageUrl,
-                        hasClinic: false,
-                        petClinic: controllers[5].text,
-                        vetName: controllers[6].text,
-                        vetNotes: controllers[7].text,
-                        lastVisit: controllers[8].text,
-                        nextVisit: controllers[9].text,
-                        id: widget.pup.id,
-                      );
-                      context.read<PupsBloc>().add(
-                            EditPup(pup: pup),
-                          );
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // TODO: Edit Pup
+                      try {
+                        final pup = Pup(
+                          name: controllers[0].text,
+                          sex: controllers[1].text,
+                          breed: controllers[2].text,
+                          age: int.parse(controllers[3].text),
+                          owner: controllers[4].text,
+                          imageUrl: imageUrl,
+                          hasClinic: false,
+                          petClinic: controllers[5].text,
+                          vetName: controllers[6].text,
+                          vetNotes: controllers[7].text,
+                          lastVisit: controllers[8].text,
+                          nextVisit: controllers[9].text,
+                          id: widget.pup.id,
+                        );
+                        context.read<PupsBloc>().add(
+                              EditPup(pup: pup),
+                            );
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Pup Edited successfully'),
-                        ),
-                      );
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Error adding pup. Please try again.'),
-                        ),
-                      );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Pup Edited successfully'),
+                          ),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Error adding pup. Please try again.'),
+                          ),
+                        );
+                      }
                     }
-                  }
-                },
+                  },
+                ),
               ),
             ],
           ),
