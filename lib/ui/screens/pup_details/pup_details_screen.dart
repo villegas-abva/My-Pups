@@ -29,164 +29,162 @@ class _PupDetailsScreenState extends State<PupDetailsScreen> {
         child: Stack(
           children: [
             // Pup Image
-            Container(
-              width: double.maxFinite,
-              height: 350,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(widget.pup.imageUrl),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-
-            _buildBackDropWidget(top: 45, left: 14),
+            _buildPupImage(),
             // Back Icon
-            Positioned(
-              left: 12,
-              top: 40,
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  size: 20.0,
-                ),
-                color: Colors.white,
-              ),
+            _buildBackDropWidget(top: 45, left: 14),
+            _buildIcon(
+              isLeftIcon: true,
+              icon: Icons.arrow_back_ios,
+              left: 10,
+              top: 39,
             ),
-
-            _buildBackDropWidget(top: 45, right: 14),
             // Options Icon
-            Positioned(
-              right: 9,
-              top: 40,
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/editPup',
-                      arguments: widget.pup);
-                  // TODO: Implement Modal Bottom Sheet
-                  // showModalBottomSheet(
-                  //     context: context,
-                  //     builder: (BuildContext newContext) {
-                  //       return _buildBottomSheet(context, widget.pup);
-                  //     });
-                },
-                icon: const Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-            ),
-
+            _buildBackDropWidget(top: 45, right: 14),
+            _buildIcon(isLeftIcon: false, icon: Icons.menu, right: 7, top: 39),
             // Pup Description Container
             Positioned(
-              top: 320,
-              child: Container(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
-                width: MediaQuery.of(context).size.width,
-                height: 500,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AppLargeText(
-                            text: widget.pup.name,
-                            color: Colors.black.withOpacity(0.8)),
-                        AppLargeText(
-                          text: '${widget.pup.age.toString()} years old',
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        AppLargeText(
-                          text: 'Breed:',
-                          color: Colors.black.withOpacity(
-                            0.8,
-                          ),
-                          size: 18,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        AppRegularText(
-                          text: widget.pup.breed,
-                          size: 20,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        AppLargeText(
-                          text: 'Owner:',
-                          color: Colors.black.withOpacity(
-                            0.8,
-                          ),
-                          size: 18,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        const AppRegularText(
-                          text: 'Andrew Villegas',
-                          size: 20,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    AppLargeText(
-                      text: 'Shot History: ',
-                      color: Colors.black.withOpacity(
-                        0.8,
-                      ),
-                      size: 18,
-                    ),
-                    const SizedBox(height: 20),
-                    AppLargeText(
-                      text: 'Last Visit: ',
-                      color: Colors.black.withOpacity(
-                        0.8,
-                      ),
-                      size: 18,
-                    ),
-                    const SizedBox(height: 20),
-                    AppLargeText(
-                      text: 'Next Visit: ',
-                      color: Colors.black.withOpacity(
-                        0.8,
-                      ),
-                      size: 18,
-                    ),
-                    const SizedBox(height: 20),
-                    AppLargeText(
-                      text: 'Vet\'s Notes: ',
-                      color: Colors.black.withOpacity(
-                        0.8,
-                      ),
-                      size: 18,
-                    ),
-                    const SizedBox(height: 10),
-                  ],
-                ),
-              ),
+              top: 425,
+              child: _buildBottomContainer(widget.pup),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildPupImage() {
+    return Container(
+      width: double.maxFinite,
+      height: 550,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(widget.pup.imageUrl),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIcon({
+    double? left = 0,
+    double? right = 0,
+    double? top = 40,
+    required IconData icon,
+    bool isLeftIcon = true,
+  }) {
+    return isLeftIcon
+        ? Positioned(
+            left: left,
+            top: top,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                icon,
+                color: Colors.white,
+                size: 20.0,
+              ),
+              color: Colors.white,
+            ),
+          )
+        : Positioned(
+            right: right,
+            top: top,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/editPup', arguments: widget.pup);
+              },
+              icon: Icon(
+                icon,
+                color: Colors.white,
+                size: 20.0,
+              ),
+              color: Colors.white,
+            ),
+          );
+  }
+
+  Widget _buildBottomContainer(Pup pup) {
+    return Container(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
+      width: MediaQuery.of(context).size.width,
+      height: 300,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(55),
+          topRight: Radius.circular(55),
+        ),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeader(pup),
+            const SizedBox(height: 20),
+            _buildDetailsCard(pup),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(Pup pup) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          AppLargeText(text: pup.name, color: Colors.pinkAccent),
+          AppLargeText(
+              text: '${pup.age.toString()} yrs', color: Colors.pinkAccent),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailsCard(Pup pup) {
+    return Card(
+      elevation: 15,
+      child: Container(
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: IntrinsicHeight(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildDetailField(text: pup.breed, icon: Icons.pets_outlined),
+              buildDivider(),
+              _buildDetailField(text: '30 kgs', icon: Icons.scale_outlined),
+              buildDivider(),
+              _buildDetailField(
+                  text: '03.02.19', icon: Icons.celebration_outlined),
+              buildDivider(),
+              _buildDetailField(
+                text: 'female',
+                icon: Icons.male,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDetailField({
+    required String text,
+    required IconData icon,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AppRegularText(text: text, color: Colors.black, size: 16),
+        const SizedBox(height: 10),
+        Icon(icon, size: 30, color: Colors.pinkAccent),
+      ],
     );
   }
 }
@@ -255,18 +253,27 @@ Widget _buildBackDropWidget({double? top, double? left, double? right}) {
     top: top,
     left: left,
     right: right,
-    width: 35,
-    height: 35,
+    width: 33,
+    height: 33,
     child: ClipRRect(
       borderRadius: BorderRadius.circular(25),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.2),
           ),
         ),
       ),
+    ),
+  );
+}
+
+Widget buildDivider() {
+  return Container(
+    height: 50,
+    child: VerticalDivider(
+      color: Colors.black,
     ),
   );
 }

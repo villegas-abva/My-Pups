@@ -188,62 +188,66 @@ class _AddPupScreenState extends State<AddPupScreen> {
                 ],
               ),
               SizedBox(height: 20),
-              TextButton(
-                child: Container(
-                  height: 60,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.pinkAccent.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Center(
-                    child: AppRegularText(
-                      text: 'Add Pup',
-                      color: Colors.white,
-                      size: 21,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: TextButton(
+                  child: Container(
+                    height: 60,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.pinkAccent.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(55),
+                    ),
+                    child: const Center(
+                      child: AppRegularText(
+                        text: 'Add Pup',
+                        color: Colors.white,
+                        size: 21,
+                      ),
                     ),
                   ),
-                ),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    try {
-                      final pup = Pup(
-                        name: controllers[0].text,
-                        sex: controllers[1].text,
-                        breed: controllers[2].text,
-                        age: int.parse(controllers[3].text),
-                        owner: controllers[4].text,
-                        imageUrl: imageUrl,
-                        hasClinic: false,
-                        petClinic: controllers[5].text,
-                        vetName: controllers[6].text,
-                        vetNotes: controllers[7].text,
-                        lastVisit: controllers[8].text,
-                        nextVisit: controllers[9].text,
-                        id: '',
-                      );
-                      context.read<PupsBloc>().add(
-                            AddPup(pup: pup),
-                          );
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      try {
+                        final pup = Pup(
+                          name: controllers[0].text,
+                          sex: controllers[1].text,
+                          breed: controllers[2].text,
+                          age: int.parse(controllers[3].text),
+                          owner: controllers[4].text,
+                          imageUrl: imageUrl,
+                          hasClinic: false,
+                          petClinic: controllers[5].text,
+                          vetName: controllers[6].text,
+                          vetNotes: controllers[7].text,
+                          lastVisit: controllers[8].text,
+                          nextVisit: controllers[9].text,
+                          id: '',
+                        );
+                        context.read<PupsBloc>().add(
+                              AddPup(pup: pup),
+                            );
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Pup Added successfully'),
-                        ),
-                      );
-                      Navigator.pushNamed(
-                        context,
-                        '/',
-                      );
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Error adding pup. Please try again.'),
-                        ),
-                      );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Pup Added successfully'),
+                          ),
+                        );
+                        Navigator.pushNamed(
+                          context,
+                          '/',
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Error adding pup. Please try again.'),
+                          ),
+                        );
+                      }
                     }
-                  }
-                },
+                  },
+                ),
               ),
             ],
           ),
