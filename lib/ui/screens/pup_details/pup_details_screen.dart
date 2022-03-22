@@ -40,28 +40,28 @@ class _PupDetailsScreenState extends State<PupDetailsScreen> {
               ),
             ),
 
-            _buildBackDropWidget(top: 46, left: 15),
+            _buildBackDropWidget(top: 45, left: 14),
             // Back Icon
             Positioned(
-              left: 20,
-              top: 50,
+              left: 12,
+              top: 40,
               child: IconButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 icon: const Icon(
                   Icons.arrow_back_ios,
-                  size: 30.0,
+                  size: 20.0,
                 ),
                 color: Colors.white,
               ),
             ),
 
-            _buildBackDropWidget(top: 46, right: 18),
+            _buildBackDropWidget(top: 45, right: 14),
             // Options Icon
             Positioned(
-              right: 20,
-              top: 50,
+              right: 9,
+              top: 40,
               child: IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/editPup',
@@ -254,8 +254,8 @@ Widget _buildBackDropWidget({double? top, double? left, double? right}) {
     top: top,
     left: left,
     right: right,
-    width: 50,
-    height: 55,
+    width: 35,
+    height: 35,
     child: ClipRRect(
       borderRadius: BorderRadius.circular(25),
       child: BackdropFilter(
