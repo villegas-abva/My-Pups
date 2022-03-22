@@ -2,10 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
+import 'package:my_pups/ui/common/widgets/circular_avatar/circular_avatar_widget.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/common/widgets/text_form_field/app_textform_field.dart';
@@ -13,8 +12,10 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
 
 class EditPupScreen extends StatefulWidget {
+  final Pup pup;
   const EditPupScreen({
     Key? key,
+    required this.pup,
   }) : super(key: key);
   @override
   State<EditPupScreen> createState() => _EditPupScreenState();
@@ -104,18 +105,31 @@ class _EditPupScreenState extends State<EditPupScreen> {
   ];
 
   /// return a list of controllers for each pupField
-  late final controllers = pupFields.map((pupField) {
-    return TextEditingController();
-  }).toList();
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> pupMap = {
+      'Name': widget.pup.name,
+      'Sex': widget.pup.sex,
+      'Breed': widget.pup.breed,
+      'Age': widget.pup.age,
+      'Owner': widget.pup.owner,
+      'Pet Clinic': widget.pup.petClinic,
+      'Vet\'s Name': widget.pup.vetName,
+      'Vet\'s Notes': widget.pup.vetNotes,
+      'Last Vet Visit': widget.pup.lastVisit,
+      'Next Vet Visit': widget.pup.nextVisit,
+    };
+    final controllers = pupMap.values.map((pupField) {
+      return TextEditingController(text: pupField.toString());
+    }).toList();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: CustomAppBar(
-          title: 'Add Pup',
+          title: 'Edit Pup',
           hasBackButton: true,
           hasRightIcon: false,
           leftIcon: Icons.arrow_back_ios,
@@ -127,6 +141,42 @@ class _EditPupScreenState extends State<EditPupScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const SizedBox(height: 20),
+              CircularAvatarWidget(
+                  onClicked: () {}, imagePath: widget.pup.imageUrl),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      imgFromCamera();
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(width: 2),
+                        ),
+                        height: 70,
+                        child: const Center(
+                            child: AppRegularText(text: 'From camera'))),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      imgFromGallery();
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(width: 2),
+                        ),
+                        height: 70,
+                        child: const Center(
+                            child: AppRegularText(text: 'From Galery'))),
+                  ),
+                ],
+              ),
               Wrap(
                 children: List.generate(pupFields.length, (index) {
                   return Column(
@@ -136,55 +186,18 @@ class _EditPupScreenState extends State<EditPupScreen> {
                         height: 25,
                       ),
                       AppTextFormField(
-                        label: pupFields[index],
-                        controller: controllers[index],
-                        hasOnlyNumbers:
-                            pupFields[index] == 'Age' ? true : false,
-                        borderColor: Colors.pinkAccent.withOpacity(0.9),
-                      ),
+                          label: pupFields[index],
+                          controller: controllers[index],
+                          hasOnlyNumbers:
+                              pupFields[index] == 'Age' ? true : false,
+                          borderColor: Colors.pinkAccent.withOpacity(0.9),
+                          hasValue: true,
+                          value: 'hula'),
                     ],
                   );
                 }),
               ),
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      imgFromCamera();
-                      // Navigator.of(context).pop();
-                      // pickImage(ImageSource.camera);
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(width: 2),
-                        ),
-                        height: 70,
-                        child:
-                            Center(child: AppRegularText(text: 'From camera'))),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      imgFromGallery();
-                      // Navigator.of(context).pop();
-                      // pickImage(ImageSource.gallery);
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(width: 2),
-                        ),
-                        height: 70,
-                        child:
-                            Center(child: AppRegularText(text: 'From Galery'))),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
+              const SizedBox(height: 30),
               TextButton(
                 child: Container(
                   height: 60,
@@ -195,7 +208,7 @@ class _EditPupScreenState extends State<EditPupScreen> {
                   ),
                   child: const Center(
                     child: AppRegularText(
-                      text: 'Add Pup',
+                      text: 'Edit Pup',
                       color: Colors.white,
                       size: 21,
                     ),
@@ -203,6 +216,7 @@ class _EditPupScreenState extends State<EditPupScreen> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    // TODO: Edit Pup
                     try {
                       final pup = Pup(
                         name: controllers[0].text,
@@ -219,15 +233,15 @@ class _EditPupScreenState extends State<EditPupScreen> {
                         nextVisit: controllers[9].text,
                         id: '',
                       );
-                      context.read<PupsBloc>().add(
-                            AddPup(pup: pup),
-                          );
+                      // context.read<PupsBloc>().add(
+                      //       AddPup(pup: pup),
+                      //     );
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Pup Added successfully'),
-                        ),
-                      );
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   const SnackBar(
+                      //     content: Text('Pup Added successfully'),
+                      //   ),
+                      // );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
