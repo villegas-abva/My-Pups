@@ -64,7 +64,7 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
   }
 
   void _onEditPup(EditPup event, Emitter<PupsState> emit) async {
-    await _pupsRepository.editPup(event.pup.id);
+    await _pupsRepository.editPup(pup: event.pup);
     // emit(state.copyWith(newPups: pups));
   }
 }

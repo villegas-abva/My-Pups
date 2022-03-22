@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/ui/common/widgets/circular_avatar/circular_avatar_widget.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
@@ -131,7 +133,8 @@ class _EditPupScreenState extends State<EditPupScreen> {
         child: CustomAppBar(
           title: 'Edit Pup',
           hasBackButton: true,
-          hasRightIcon: false,
+          hasRightIcon: true,
+          rightIcon: Icons.delete,
           leftIcon: Icons.arrow_back_ios,
         ),
       ),
@@ -178,21 +181,22 @@ class _EditPupScreenState extends State<EditPupScreen> {
                 ],
               ),
               Wrap(
-                children: List.generate(pupFields.length, (index) {
+                children: List.generate(pupMap.keys.length, (index) {
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(
-                        height: 25,
+                        height: 18,
                       ),
                       AppTextFormField(
-                          label: pupFields[index],
-                          controller: controllers[index],
-                          hasOnlyNumbers:
-                              pupFields[index] == 'Age' ? true : false,
-                          borderColor: Colors.pinkAccent.withOpacity(0.9),
-                          hasValue: true,
-                          value: 'hula'),
+                        label: pupMap.keys.elementAt(index),
+                        controller: controllers[index],
+                        hasOnlyNumbers: pupMap.keys.elementAt(index) == 'Age'
+                            ? true
+                            : false,
+                        borderColor: Colors.pinkAccent.withOpacity(0.9),
+                        hasValue: true,
+                      ),
                     ],
                   );
                 }),
@@ -231,17 +235,17 @@ class _EditPupScreenState extends State<EditPupScreen> {
                         vetNotes: controllers[7].text,
                         lastVisit: controllers[8].text,
                         nextVisit: controllers[9].text,
-                        id: '',
+                        id: widget.pup.id,
                       );
-                      // context.read<PupsBloc>().add(
-                      //       AddPup(pup: pup),
-                      //     );
+                      context.read<PupsBloc>().add(
+                            EditPup(pup: pup),
+                          );
 
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //   const SnackBar(
-                      //     content: Text('Pup Added successfully'),
-                      //   ),
-                      // );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Pup Edited successfully'),
+                        ),
+                      );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
