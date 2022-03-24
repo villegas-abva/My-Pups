@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/shared/widgets/actions_widget.dart';
+import 'package:my_pups/ui/common/widgets/divider/divider_widget.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 
@@ -109,7 +110,7 @@ class _PupDetailsScreenState extends State<PupDetailsScreen> {
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
       width: MediaQuery.of(context).size.width,
-      height: 300,
+      height: 500,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -121,8 +122,8 @@ class _PupDetailsScreenState extends State<PupDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(pup),
-            const SizedBox(height: 20),
+            _buildHeader(pup: pup),
+            const SizedBox(height: 10),
             _buildDetailsCard(pup),
           ],
         ),
@@ -130,15 +131,18 @@ class _PupDetailsScreenState extends State<PupDetailsScreen> {
     );
   }
 
-  Widget _buildHeader(Pup pup) {
+  Widget _buildHeader({required Pup pup}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppLargeText(text: pup.name, color: Colors.pinkAccent),
           AppLargeText(
-              text: '${pup.age.toString()} yrs', color: Colors.pinkAccent),
+              text: pup.name,
+              color: pup.sex == 'Male' ? Colors.blue : Colors.pinkAccent),
+          AppLargeText(
+              text: '${pup.age.toString()} yrs',
+              color: pup.sex == 'Male' ? Colors.blue : Colors.pinkAccent),
         ],
       ),
     );
@@ -148,7 +152,8 @@ class _PupDetailsScreenState extends State<PupDetailsScreen> {
     return Card(
       elevation: 15,
       child: Container(
-        padding: EdgeInsets.all(20),
+        height: 100,
+        padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
         ),
@@ -156,17 +161,25 @@ class _PupDetailsScreenState extends State<PupDetailsScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildDetailField(text: pup.breed, icon: Icons.pets_outlined),
-              buildDivider(),
-              _buildDetailField(text: '30 kgs', icon: Icons.scale_outlined),
-              buildDivider(),
               _buildDetailField(
-                  text: '03.02.19', icon: Icons.celebration_outlined),
-              buildDivider(),
+                  text: pup.breed,
+                  icon: Icons.pets_outlined,
+                  isMale: pup.sex == 'Male' ? true : false),
+              const DividerWidget(height: 50),
               _buildDetailField(
-                text: 'female',
-                icon: Icons.male,
-              ),
+                  text: '30 kgs',
+                  icon: Icons.scale_outlined,
+                  isMale: pup.sex == 'Male' ? true : false),
+              const DividerWidget(height: 50),
+              _buildDetailField(
+                  text: '03.02.19',
+                  icon: Icons.celebration_outlined,
+                  isMale: pup.sex == 'Male' ? true : false),
+              const DividerWidget(height: 50),
+              _buildDetailField(
+                  text: pup.sex,
+                  icon: Icons.male,
+                  isMale: pup.sex == 'Male' ? true : false),
             ],
           ),
         ),
@@ -174,17 +187,24 @@ class _PupDetailsScreenState extends State<PupDetailsScreen> {
     );
   }
 
-  Widget _buildDetailField({
-    required String text,
-    required IconData icon,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppRegularText(text: text, color: Colors.black, size: 16),
-        const SizedBox(height: 10),
-        Icon(icon, size: 30, color: Colors.pinkAccent),
-      ],
+  Widget _buildDetailField(
+      {required String text, required IconData icon, required bool isMale}) {
+    return SizedBox(
+      height: 60,
+      width: 60,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          AppRegularText(
+            text: text,
+            color: Colors.black,
+            size: 14,
+            maxLines: 1,
+          ),
+          const SizedBox(height: 12),
+          Icon(icon, size: 25, color: isMale ? Colors.blue : Colors.pinkAccent),
+        ],
+      ),
     );
   }
 }
@@ -265,15 +285,6 @@ Widget _buildBackDropWidget({double? top, double? left, double? right}) {
           ),
         ),
       ),
-    ),
-  );
-}
-
-Widget buildDivider() {
-  return Container(
-    height: 50,
-    child: VerticalDivider(
-      color: Colors.black,
     ),
   );
 }
