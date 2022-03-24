@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
-import 'package:my_pups/auth.dart';
-import 'package:my_pups/bloc/nav/app_nav_cubit.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/screens/my_pups/my_pups_screen.dart';
 import 'package:my_pups/ui/screens/profile/profile_screen.dart';
@@ -24,21 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
     const ProfileScreen(),
   ];
 
-  ShapeBorder? bottomBarShape = const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-    topLeft: Radius.circular(25),
-    topRight: Radius.circular(25),
-  ));
-  SnakeBarBehaviour snakeBarStyle = SnakeBarBehaviour.pinned;
-
-  int _selectedItemPosition = 0;
-  SnakeShape snakeShape = SnakeShape.circle;
-
-  bool showSelectedLabels = false;
-  bool showUnselectedLabels = false;
-
   Color selectedColor = Colors.pinkAccent.withOpacity(0.9);
   Color unselectedColor = Colors.blueGrey.withOpacity(0.8);
+
+  int _currentIndex = 0;
+  final _selectedColor = Color.fromARGB(255, 70, 90, 121);
 
   @override
   Widget build(BuildContext context) {
@@ -46,30 +34,29 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       extendBody: true,
-      body: screens[widget.pageIndex],
-      bottomNavigationBar: SnakeNavigationBar.color(
-        height: 55,
-        backgroundColor: Colors.black.withOpacity(0.9),
-        behaviour: snakeBarStyle,
-        snakeShape: snakeShape,
-        shape: bottomBarShape,
-        snakeViewColor: selectedColor,
-        selectedItemColor:
-            snakeShape == SnakeShape.indicator ? selectedColor : null,
-        unselectedItemColor: unselectedColor,
-        showUnselectedLabels: showUnselectedLabels,
-        showSelectedLabels: showSelectedLabels,
-        currentIndex: widget.pageIndex,
-        onTap: (index) => setState(() => widget.pageIndex = index),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'My pups'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-        selectedLabelStyle: const TextStyle(fontSize: 14),
-        unselectedLabelStyle: const TextStyle(fontSize: 10),
+      body: screens[_currentIndex],
+      bottomNavigationBar: Container(
+        color: Colors.white,
+        child: (SalomonBottomBar(
+          currentIndex: _currentIndex,
+          onTap: (i) => setState(() => _currentIndex = i),
+          items: [
+            /// Home
+            SalomonBottomBarItem(
+                icon: const Icon(Icons.pets),
+                title: const Text("My Pups"),
+                selectedColor: _selectedColor),
+
+            /// My Profile
+            SalomonBottomBarItem(
+                icon: const Icon(Icons.person),
+                title: const Text("Profile"),
+                selectedColor: _selectedColor),
+          ],
+        )),
       ),
       drawer: Drawer(
-        backgroundColor: Colors.pinkAccent.withOpacity(0.9),
+        backgroundColor: Colors.black,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -101,20 +88,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
-
-  void _onPageChanged(int page) {
-    switch (page) {
-      case 0:
-        print(page.toString());
-
-        setState(() {});
-        break;
-      case 1:
-        print(page.toString());
-
-        setState(() {});
-        break;
-    }
   }
 }
