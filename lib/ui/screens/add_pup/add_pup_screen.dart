@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
+import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/common/widgets/text_form_field/app_textform_field.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -89,9 +90,11 @@ class _AddPupScreenState extends State<AddPupScreen> {
     }
   }
 
+  var dropDownSelection = 'Male';
+  final sexValues = ['Male', 'Female'];
+
   List<dynamic> pupFields = [
     'Name',
-    'Sex',
     'Breed',
     'Age',
     'Owner',
@@ -127,6 +130,35 @@ class _AddPupScreenState extends State<AddPupScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    AppRegularText(
+                      text: 'Choose sex',
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: DropdownButton(
+                        value: dropDownSelection,
+                        hint: const AppRegularText(text: 'Sex'),
+                        items: sexValues.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: AppRegularText(
+                                text: items, color: Colors.black),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropDownSelection = newValue!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Wrap(
                 children: List.generate(pupFields.length, (index) {
                   return Column(
@@ -187,7 +219,7 @@ class _AddPupScreenState extends State<AddPupScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 50),
                 child: TextButton(
@@ -211,17 +243,17 @@ class _AddPupScreenState extends State<AddPupScreen> {
                       try {
                         final pup = Pup(
                           name: controllers[0].text,
-                          sex: controllers[1].text,
-                          breed: controllers[2].text,
-                          age: int.parse(controllers[3].text),
-                          owner: controllers[4].text,
+                          breed: controllers[1].text,
+                          age: int.parse(controllers[2].text),
+                          owner: controllers[3].text,
                           imageUrl: imageUrl,
                           hasClinic: false,
-                          petClinic: controllers[5].text,
-                          vetName: controllers[6].text,
-                          vetNotes: controllers[7].text,
-                          lastVisit: controllers[8].text,
-                          nextVisit: controllers[9].text,
+                          petClinic: controllers[4].text,
+                          vetName: controllers[5].text,
+                          vetNotes: controllers[6].text,
+                          lastVisit: controllers[7].text,
+                          nextVisit: controllers[8].text,
+                          sex: dropDownSelection,
                           id: '',
                         );
                         context.read<PupsBloc>().add(

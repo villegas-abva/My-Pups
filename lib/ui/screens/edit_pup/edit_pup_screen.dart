@@ -92,12 +92,14 @@ class _EditPupScreenState extends State<EditPupScreen> {
     }
   }
 
+  var dropDownSelection = 'Male';
+  final sexValues = ['Male', 'Female'];
+
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> pupMap = {
       'Name': widget.pup.name,
       'Sex': widget.pup.sex,
-      'Breed': widget.pup.breed,
       'Age': widget.pup.age,
       'Owner': widget.pup.owner,
       'Pet Clinic': widget.pup.petClinic,
@@ -164,6 +166,35 @@ class _EditPupScreenState extends State<EditPupScreen> {
                   ),
                 ],
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    AppRegularText(
+                      text: 'Choose sex',
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: DropdownButton(
+                        value: dropDownSelection,
+                        hint: const AppRegularText(text: 'Sex'),
+                        items: sexValues.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: AppRegularText(
+                                text: items, color: Colors.black),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropDownSelection = newValue!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Wrap(
                 children: List.generate(pupMap.keys.length, (index) {
                   return Column(
@@ -210,17 +241,17 @@ class _EditPupScreenState extends State<EditPupScreen> {
                       try {
                         final pup = Pup(
                           name: controllers[0].text,
-                          sex: controllers[1].text,
-                          breed: controllers[2].text,
-                          age: int.parse(controllers[3].text),
-                          owner: controllers[4].text,
+                          breed: controllers[1].text,
+                          age: int.parse(controllers[2].text),
+                          owner: controllers[3].text,
                           imageUrl: imageUrl,
                           hasClinic: false,
-                          petClinic: controllers[5].text,
-                          vetName: controllers[6].text,
-                          vetNotes: controllers[7].text,
-                          lastVisit: controllers[8].text,
-                          nextVisit: controllers[9].text,
+                          petClinic: controllers[4].text,
+                          vetName: controllers[5].text,
+                          vetNotes: controllers[6].text,
+                          lastVisit: controllers[7].text,
+                          nextVisit: controllers[8].text,
+                          sex: dropDownSelection,
                           id: widget.pup.id,
                         );
                         context.read<PupsBloc>().add(
