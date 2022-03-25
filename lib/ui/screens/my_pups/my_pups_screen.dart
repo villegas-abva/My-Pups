@@ -4,13 +4,10 @@ import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/ui/common/widgets/clipper/bottom_clipper.dart';
 import 'dart:math' as math;
-import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
 import 'package:my_pups/shared/widgets/loading_widget.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
-import 'package:my_pups/ui/common/widgets/text_form_field/app_textform_field.dart';
-import 'package:my_pups/ui/screens/add_pup/add_pup_screen.dart';
-import 'package:my_pups/ui/screens/pup_details/pup_details_screen.dart';
+import 'package:my_pups/ui/common/widgets/text_form_field/custom_text_form_field.dart';
 
 class MyPupsScreen extends StatefulWidget {
   const MyPupsScreen({Key? key}) : super(key: key);
@@ -66,56 +63,66 @@ class _MyPupsBodyState extends State<MyPupsBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black87,
-        body: _buildBody(pups: widget.state.pups));
+      backgroundColor: Colors.black87,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildTopContainer(),
+            const SizedBox(height: 30),
+            _buildPups(pups: widget.state.pups),
+            const SizedBox(height: 50),
+            _buildAddPupBottomSheet(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTopContainer() {
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: [
+        ClipPath(
+          clipper: BottomClipper(),
+          child: Container(
+            width: double.infinity,
+            height: 180,
+            decoration: BoxDecoration(color: Colors.yellow[800]),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            children: [
+              const SizedBox(height: 70),
+              Row(
+                children: [
+                  _buildHeader(
+                      title: 'Hi, Andrew',
+                      subtitle: 'Here\'s an overview of your pups')
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 
-Widget _buildBody({required List<Pup> pups}) {
-  return SingleChildScrollView(
-    child: Column(
-      children: [
-        Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            ClipPath(
-              clipper: BottomClipper(),
-              child: Container(
-                width: double.infinity,
-                height: 180,
-                decoration: BoxDecoration(color: Colors.yellow[800]),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                children: [
-                  const SizedBox(height: 70),
-                  Row(
-                    children: [
-                      _buildHeader(
-                          title: 'Hi, Andrew',
-                          subtitle: 'Here\'s an overview of your pups')
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 30),
-        // Text('hula')
-        _buildPups(pups: pups),
-        const SizedBox(height: 30),
-        AnimatedTextWidget(),
-      ],
-    ),
+Widget _buildHeader({required String title, required String subtitle}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      AppLargeText(text: title, color: Colors.white, size: 24),
+      AppRegularText(text: subtitle, color: Colors.white),
+    ],
   );
 }
 
 Widget _buildPups({required List<Pup> pups}) {
   return SizedBox(
-    height: 580,
+    height: 380,
     width: double.infinity,
     child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -197,50 +204,18 @@ Widget _buildPupCard({required BuildContext context, required Pup pup}) {
   );
 }
 
-Widget _buildHeader({required String title, required String subtitle}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      AppLargeText(text: title, color: Colors.white, size: 24),
-      AppRegularText(text: subtitle, color: Colors.white),
-    ],
+Widget _buildAddPupBottomSheet(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.only(right: 15.0),
+    child: Align(
+      alignment: Alignment.bottomRight,
+      child: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/addPup');
+        },
+        backgroundColor: Colors.yellow.shade800,
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    ),
   );
-}
-
-class AnimatedTextWidget extends StatefulWidget {
-  const AnimatedTextWidget({Key? key}) : super(key: key);
-
-  @override
-  _AnimatedTextWidgetState createState() => _AnimatedTextWidgetState();
-}
-
-class _AnimatedTextWidgetState extends State<AnimatedTextWidget>
-    with TickerProviderStateMixin {
-  late final AnimationController _controller =
-      AnimationController(duration: Duration(seconds: 2), vsync: this)
-        ..repeat();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _controller.forward();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      child: AppRegularText(text: 'hula', color: Colors.white),
-      builder: (BuildContext context, Widget? child) {
-        return Transform.rotate(angle: _controller.value * 0.2 * math.pi);
-      },
-    );
-  }
 }

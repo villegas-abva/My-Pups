@@ -6,11 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
+import 'package:my_pups/ui/common/widgets/button/custom_button.dart';
 import 'package:my_pups/ui/common/widgets/circular_avatar/circular_avatar_widget.dart';
+import 'package:my_pups/ui/common/widgets/clipper/bottom_clipper.dart';
 import 'package:my_pups/ui/common/widgets/custom_app_bar.dart';
+import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/common/widgets/text_form_field/app_textform_field.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:my_pups/ui/common/widgets/text_form_field/custom_text_form_field.dart';
 import 'package:path/path.dart';
 
 class EditPupScreen extends StatefulWidget {
@@ -99,7 +103,7 @@ class _EditPupScreenState extends State<EditPupScreen> {
   Widget build(BuildContext context) {
     Map<String, dynamic> pupMap = {
       'Name': widget.pup.name,
-      'Sex': widget.pup.sex,
+      // 'Sex': widget.pup.sex,
       'Age': widget.pup.age,
       'Owner': widget.pup.owner,
       'Pet Clinic': widget.pup.petClinic,
@@ -113,172 +117,205 @@ class _EditPupScreenState extends State<EditPupScreen> {
     }).toList();
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: CustomAppBar(
-          title: 'Edit Pup',
-          hasBackButton: true,
-          hasRightIcon: true,
-          rightIcon: Icons.delete,
-          leftIcon: Icons.arrow_back_ios,
-        ),
-      ),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 20),
-              CircularAvatarWidget(
-                  onClicked: () {}, imagePath: widget.pup.imageUrl),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      imgFromCamera();
-                    },
-                    child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(width: 2),
-                        ),
-                        height: 70,
-                        child: const Center(
-                            child: AppRegularText(text: 'From camera'))),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      imgFromGallery();
-                    },
-                    child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(width: 2),
-                        ),
-                        height: 70,
-                        child: const Center(
-                            child: AppRegularText(text: 'From Galery'))),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    AppRegularText(
-                      text: 'Choose sex',
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: DropdownButton(
-                        value: dropDownSelection,
-                        hint: const AppRegularText(text: 'Sex'),
-                        items: sexValues.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: AppRegularText(
-                                text: items, color: Colors.black),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropDownSelection = newValue!;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Wrap(
-                children: List.generate(pupMap.keys.length, (index) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      AppTextFormField(
-                        label: pupMap.keys.elementAt(index),
-                        controller: controllers[index],
-                        hasOnlyNumbers: pupMap.keys.elementAt(index) == 'Age'
-                            ? true
-                            : false,
-                        borderColor: Colors.pinkAccent.withOpacity(0.9),
-                        hasValue: true,
-                      ),
-                    ],
-                  );
-                }),
-              ),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 50),
-                child: TextButton(
-                  child: Container(
-                    height: 60,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.pinkAccent.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(55),
-                    ),
-                    child: const Center(
-                      child: AppRegularText(
-                        text: 'Edit Pup',
-                        color: Colors.white,
-                        size: 21,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // TODO: Edit Pup
-                      try {
-                        final pup = Pup(
-                          name: controllers[0].text,
-                          breed: controllers[1].text,
-                          age: int.parse(controllers[2].text),
-                          owner: controllers[3].text,
-                          imageUrl: imageUrl,
-                          hasClinic: false,
-                          petClinic: controllers[4].text,
-                          vetName: controllers[5].text,
-                          vetNotes: controllers[6].text,
-                          lastVisit: controllers[7].text,
-                          nextVisit: controllers[8].text,
-                          sex: dropDownSelection,
-                          id: widget.pup.id,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                _buildRoundedContainer(height: 180),
+                _buildAppBar(context: context),
+                _buildImage(topPadding: 110, pup: widget.pup),
+                _buildFields(
+                    topPadding: 230,
+                    pup: widget.pup,
+                    pupMap: pupMap,
+                    controllers: controllers),
+              ],
+            ),
+            const SizedBox(height: 20),
+            CustomButton(
+              text: 'Save',
+              textColor: Color.fromARGB(255, 70, 90, 121),
+              backgroundColor: Colors.yellow.shade800,
+              onTap: () {
+                if (_formKey.currentState!.validate()) {
+                  // TODO: Edit Pup
+                  try {
+                    final pup = Pup(
+                      name: controllers[0].text,
+                      breed: controllers[1].text,
+                      age: int.parse(controllers[2].text),
+                      owner: controllers[3].text,
+                      imageUrl: imageUrl,
+                      hasClinic: false,
+                      petClinic: controllers[4].text,
+                      vetName: controllers[5].text,
+                      vetNotes: controllers[6].text,
+                      lastVisit: controllers[7].text,
+                      nextVisit: controllers[8].text,
+                      sex: dropDownSelection,
+                      id: widget.pup.id,
+                    );
+                    context.read<PupsBloc>().add(
+                          EditPup(pup: pup),
                         );
-                        context.read<PupsBloc>().add(
-                              EditPup(pup: pup),
-                            );
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Pup Edited successfully'),
-                          ),
-                        );
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content:
-                                Text('Error adding pup. Please try again.'),
-                          ),
-                        );
-                      }
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Pup Edited successfully'),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Error adding pup. Please try again.'),
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
         ),
       ),
     );
   }
+}
+
+Widget _buildImage({required double topPadding, required Pup pup}) {
+  return Padding(
+    padding: EdgeInsets.only(
+      top: topPadding,
+    ),
+    child: CircularAvatarWidget(
+        onClicked: () {},
+        imagePath: pup.imageUrl,
+        isNetworkImage: true,
+        iconColor: Colors.yellow.shade800),
+  );
+}
+
+Widget _buildRoundedContainer({required double height}) {
+  return ClipPath(
+    clipper: BottomClipper(),
+    child: Container(
+      width: double.infinity,
+      height: height,
+      decoration: BoxDecoration(color: Colors.yellow[800]),
+    ),
+  );
+}
+
+Widget _buildAppBar({required BuildContext context}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+    child: Column(
+      children: [
+        const SizedBox(height: 50),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            GestureDetector(
+              child: const Icon(Icons.arrow_back_ios, color: Colors.white),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 95),
+              child: AppRegularText(
+                size: 24,
+                text: 'Edit Pup',
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildFields(
+    {required double topPadding,
+    required Pup pup,
+    required Map<String, dynamic> pupMap,
+    required List<TextEditingController> controllers}) {
+  return Padding(
+    padding: EdgeInsets.only(top: topPadding),
+    child: Wrap(
+      children: List.generate(
+        pupMap.keys.length,
+        (index) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 18,
+              ),
+              CustomTextFormField(
+                label: pupMap.keys.elementAt(index),
+                labelColor: Colors.yellow.shade800,
+                // textColor: Colors.black,
+                controller: controllers[index],
+                hasOnlyNumbers:
+                    pupMap.keys.elementAt(index) == 'Age' ? true : false,
+                borderColor: Colors.yellow.shade800,
+                hasValue: true,
+              )
+            ],
+          );
+        },
+      ),
+    ),
+  );
+}
+
+Widget _buildBottomSheet(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+    child: Wrap(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildImageSource(
+                onTap: () {
+                  print('kiki');
+                },
+                text: 'From Camera',
+                icon: Icons.photo_camera),
+            SizedBox(height: 20),
+            _buildImageSource(
+                onTap: () {
+                  print('kiki');
+                },
+                text: 'From Gallery',
+                icon: Icons.image),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildImageSource(
+    {required Function onTap, required String text, required IconData icon}) {
+  return GestureDetector(
+    onTap: onTap(),
+    child: Column(
+      children: [
+        // Icon(icon),
+        // const SizedBox(height: 5),
+        AppLargeText(
+          text: text,
+          color: Colors.yellow.shade800,
+          size: 18,
+        ),
+      ],
+    ),
+  );
 }

@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 class CircularAvatarWidget extends StatelessWidget {
   final VoidCallback onClicked;
   final String imagePath;
+  final Color iconColor;
+  final bool isNetworkImage;
 
   const CircularAvatarWidget(
-      {Key? key, required this.onClicked, required this.imagePath})
+      {Key? key,
+      required this.onClicked,
+      this.imagePath = 'assets/images/pup_incognito.jpeg',
+      this.iconColor = Colors.blue,
+      this.isNetworkImage = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final image = NetworkImage(imagePath);
+    dynamic image = NetworkImage(imagePath);
     return Center(
       child: Stack(
         children: [
@@ -18,13 +24,18 @@ class CircularAvatarWidget extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: Ink.image(
-                image: image,
+                image: isNetworkImage
+                    ? image
+                    : const AssetImage('assets/images/pup_incognito.jpeg'),
                 fit: BoxFit.cover,
                 height: 130,
                 width: 130,
                 child: InkWell(
                   onTap: () {},
                 ),
+                // image: isNetworkImage? image
+                // : AssetImage('assets/images/pup_incognito.jpeg'),
+                // image: image,
               ),
             ),
           ),
@@ -37,7 +48,7 @@ class CircularAvatarWidget extends StatelessWidget {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.blue,
+                    color: iconColor,
                     border: Border.all(
                       width: 3,
                       color: Colors.white,
