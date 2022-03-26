@@ -126,9 +126,7 @@ class _AddPupScreenState extends State<AddPupScreen> {
               children: [
                 _buildRoundedContainer(height: 180),
                 _buildAppBar(context: context),
-                _buildImage(
-                  topPadding: 110,
-                ),
+                _buildImage(topPadding: 110, context: context),
                 _buildFields(
                     topPadding: 230,
                     fields: pupFields,
@@ -149,14 +147,14 @@ class _AddPupScreenState extends State<AddPupScreen> {
                       breed: controllers[1].text,
                       age: int.parse(controllers[2].text),
                       owner: controllers[3].text,
-                      imageUrl: imageUrl,
-                      hasClinic: false,
                       petClinic: controllers[4].text,
                       vetName: controllers[5].text,
                       vetNotes: controllers[6].text,
                       lastVisit: controllers[7].text,
                       nextVisit: controllers[8].text,
                       sex: dropDownSelection,
+                      imageUrl: imageUrl,
+                      hasClinic: false,
                       id: '',
                     );
                     context.read<PupsBloc>().add(
@@ -183,20 +181,6 @@ class _AddPupScreenState extends State<AddPupScreen> {
       ),
     );
   }
-}
-
-Widget _buildImage({
-  required double topPadding,
-}) {
-  return Padding(
-    padding: EdgeInsets.only(
-      top: topPadding,
-    ),
-    child: CircularAvatarWidget(
-        onClicked: () {},
-        isNetworkImage: false,
-        iconColor: Colors.yellow.shade800),
-  );
 }
 
 Widget _buildRoundedContainer({required double height}) {
@@ -270,5 +254,84 @@ Widget _buildFields(
         },
       ),
     ),
+  );
+}
+
+Widget _buildImage(
+    {required double topPadding, required BuildContext context}) {
+  return Padding(
+    padding: EdgeInsets.only(
+      top: topPadding,
+    ),
+    child: CircularAvatarWidget(
+        onClicked: () {
+          _showModalBottomSheet(context);
+        },
+        isNetworkImage: false,
+        iconColor: Colors.yellow.shade800),
+  );
+}
+
+Padding _buildBottomSheet(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+    child: Wrap(
+      children: [
+        Column(
+          children: [
+            _buildBottomSheetItem(
+                context: context,
+                text: 'From Camera',
+                icon: Icons.add_a_photo,
+                onTap: () {
+                  print('first');
+                }),
+            Container(
+                margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                child: const Divider(
+                  color: Colors.black,
+                  thickness: 3.0,
+                  height: 26,
+                )),
+            _buildBottomSheetItem(
+                context: context,
+                text: 'From Images',
+                icon: Icons.photo,
+                onTap: () {
+                  print('second');
+                }),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildBottomSheetItem(
+    {required String text,
+    required IconData icon,
+    required BuildContext context,
+    required Function onTap}) {
+  return GestureDetector(
+    onTap: onTap(),
+    child: ListTile(
+      leading: Icon(icon, color: Colors.white),
+      title: AppRegularText(text: text, color: Colors.white),
+    ),
+  );
+}
+
+_showModalBottomSheet(context) {
+  showModalBottomSheet(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(45),
+      ),
+    ),
+    backgroundColor: Colors.yellow.shade800,
+    context: context,
+    builder: (context) {
+      return _buildBottomSheet(context);
+    },
   );
 }
