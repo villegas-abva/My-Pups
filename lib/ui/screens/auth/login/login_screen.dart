@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
-import 'package:my_pups/ui/common/widgets/text_form_field/app_textform_field.dart';
+import 'package:my_pups/ui/common/widgets/text_form_field/custom_text_form_field.dart';
 
 class LoginScreen extends StatelessWidget {
   final Function toggleScreen;
@@ -28,14 +28,14 @@ class LoginScreen extends StatelessWidget {
                 const AppRegularText(
                     text: 'Sign in to continue', color: Colors.grey),
                 const SizedBox(height: 60),
-                AppTextFormField(
+                CustomTextFormField(
                   label: 'Email',
                   controller: emailContoller,
                   hasPrefixIcon: true,
                   icon: Icons.email,
                 ),
                 const SizedBox(height: 20),
-                AppTextFormField(
+                CustomTextFormField(
                   label: 'Password',
                   controller: passwordController,
                   hasPrefixIcon: true,
