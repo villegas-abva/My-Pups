@@ -294,12 +294,13 @@ Padding _buildBottomSheet(BuildContext context) {
                   height: 26,
                 )),
             _buildBottomSheetItem(
-                context: context,
-                text: 'From Images',
-                icon: Icons.photo,
-                onTap: () {
-                  print('second');
-                }),
+              context: context,
+              text: 'From Images',
+              icon: Icons.photo,
+              onTap: () {
+                print('second');
+              },
+            ),
           ],
         ),
       ],
@@ -311,9 +312,9 @@ Widget _buildBottomSheetItem(
     {required String text,
     required IconData icon,
     required BuildContext context,
-    required Function onTap}) {
+    required VoidCallback onTap}) {
   return GestureDetector(
-    onTap: onTap(),
+    onTap: onTap,
     child: ListTile(
       leading: Icon(icon, color: Colors.white),
       title: AppRegularText(text: text, color: Colors.white),
