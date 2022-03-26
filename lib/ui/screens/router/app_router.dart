@@ -9,6 +9,7 @@ import 'package:my_pups/ui/screens/auth/login/login_screen.dart';
 import 'package:my_pups/ui/screens/auth/register/register_screen.dart';
 import 'package:my_pups/ui/screens/edit_pup/edit_pup_screen.dart';
 import 'package:my_pups/ui/screens/home/home_screen.dart';
+import 'package:my_pups/ui/screens/home/lottie_animation_screen.dart';
 import 'package:my_pups/ui/screens/my_pups/my_pups_screen.dart';
 import 'package:my_pups/ui/screens/profile/edit_profile_screen.dart';
 import 'package:my_pups/ui/screens/profile/profile_screen.dart';
@@ -21,8 +22,8 @@ class AppRouter {
   Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       // Home
+
       case '/':
-        // return MaterialPageRoute(builder: (_) => const FormTestScreen());
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
                 value: _pupsBloc, child: HomeScreen(pageIndex: 0)));
