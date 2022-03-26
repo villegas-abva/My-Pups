@@ -9,11 +9,11 @@ import 'package:my_pups/ui/screens/auth/login/login_screen.dart';
 import 'package:my_pups/ui/screens/auth/register/register_screen.dart';
 import 'package:my_pups/ui/screens/edit_pup/edit_pup_screen.dart';
 import 'package:my_pups/ui/screens/home/home_screen.dart';
-import 'package:my_pups/ui/screens/home/lottie_animation_screen.dart';
 import 'package:my_pups/ui/screens/my_pups/my_pups_screen.dart';
 import 'package:my_pups/ui/screens/profile/edit_profile_screen.dart';
 import 'package:my_pups/ui/screens/profile/profile_screen.dart';
 import 'package:my_pups/ui/screens/pup_details/pup_details_screen.dart';
+import 'package:my_pups/ui/screens/test_page.dart';
 
 class AppRouter {
   final PupsBloc _pupsBloc = PupsBloc(pupsRepository: PupsRepository())
@@ -21,12 +21,12 @@ class AppRouter {
 
   Route<dynamic> onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-      // Home
 
+      // Home
       case '/':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
-                value: _pupsBloc, child: HomeScreen(pageIndex: 0)));
+                value: _pupsBloc, child: const HomeScreen()));
 
       // Auth
       case '/auth':

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_pups/ui/common/widgets/pup_lottie_animation/pup_lottie_animation.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
@@ -6,11 +7,7 @@ import 'package:my_pups/ui/screens/my_pups/my_pups_screen.dart';
 import 'package:my_pups/ui/screens/profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  int pageIndex;
-  HomeScreen({Key? key, required this.pageIndex})
-      : super(
-          key: key,
-        );
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -24,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Color selectedColor = Colors.pinkAccent.withOpacity(0.9);
   Color unselectedColor = Colors.blueGrey.withOpacity(0.8);
+  int pageIndex = 0;
 
   int _currentIndex = 0;
   final _selectedColor = Color.fromARGB(255, 70, 90, 121);

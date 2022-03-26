@@ -18,17 +18,11 @@ class _AppCubitLogicsState extends State<AppCubitLogics> {
       body: BlocBuilder<AppCubits, CubitStates>(
         builder: (context, state) {
           if (state is InitialState) {
-            return HomeScreen(
-              pageIndex: 1,
-            );
+            return HomeScreen();
           } else if (state is MyProfileState) {
-            return HomeScreen(
-              pageIndex: 1,
-            );
+            return HomeScreen();
           } else if (state is MyPupsState) {
-            return HomeScreen(
-              pageIndex: 0,
-            );
+            return HomeScreen();
           } else {
             return const SizedBox.shrink();
           }
