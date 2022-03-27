@@ -5,6 +5,7 @@ import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/ui/common/widgets/clipper/bottom_clipper.dart';
 import 'dart:math' as math;
 import 'package:my_pups/shared/widgets/loading_widget.dart';
+import 'package:my_pups/ui/common/widgets/pup_lottie_animation/pup_lottie_animation.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:my_pups/ui/common/widgets/text_form_field/custom_text_form_field.dart';
@@ -31,7 +32,8 @@ class _MyPupsScreenState extends State<MyPupsScreen>
             case PupsStatus.initial:
               return const SizedBox.shrink();
             case PupsStatus.loading:
-              return const LoadingWidget(text: 'Loading Pups...');
+              return const Center(child: PupAnimation(height: 300, width: 300));
+            // return const LoadingWidget(text: 'Loading Pups...');
             case PupsStatus.error:
               return const Center(child: Text('Error!!'));
             case PupsStatus.empty:
