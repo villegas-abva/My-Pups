@@ -142,40 +142,44 @@ class _AddPupScreenState extends State<AddPupScreen> {
                 backgroundColor: Colors.yellow.shade800,
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
-                    print('hula');
+                    controllers.forEach((element) {
+                      print(element.text);
+                    });
 
-                    // try {
-                    //   final pup = Pup(
-                    //     name: controllers[0].text,
-                    //     breed: controllers[1].text,
-                    //     age: int.parse(controllers[2].text),
-                    //     owner: controllers[3].text,
-                    //     petClinic: controllers[4].text,
-                    //     vetName: controllers[5].text,
-                    //     vetNotes: controllers[6].text,
-                    //     lastVisit: controllers[7].text,
-                    //     nextVisit: controllers[8].text,
-                    //     sex: dropDownSelection,
-                    //     imageUrl: imageUrl,
-                    //     hasClinic: false,
-                    //     id: '',
-                    //   );
-                    //   context.read<PupsBloc>().add(
-                    //         EditPup(pup: pup),
-                    //       );
-
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     const SnackBar(
-                    //       content: Text('Pup Edited successfully'),
-                    //     ),
-                    //   );
-                    // } catch (e) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     const SnackBar(
-                    //       content: Text('Error adding pup. Please try again.'),
-                    //     ),
-                    //   );
-                    // }
+                    try {
+                      final pup = Pup(
+                        name: controllers[0].text,
+                        breed: controllers[1].text,
+                        age: int.parse(controllers[2].text),
+                        owner: controllers[3].text,
+                        petClinic: controllers[4].text,
+                        vetName: controllers[5].text,
+                        vetNotes: controllers[6].text,
+                        lastVisit: controllers[7].text,
+                        nextVisit: controllers[8].text,
+                        sex: dropDownSelection,
+                        imageUrl:
+                            'https://firebasestorage.googleapis.com/v0/b/my-pups-36a9a.appspot.com/o/my_pups%2Fdog_incognito.jpg.webp?alt=media&token=9b92f4eb-ee0b-4bd2-b3a7-c8e35608caee',
+                        hasClinic: false,
+                        id: '',
+                      );
+                      context.read<PupsBloc>().add(
+                            AddPup(pup: pup),
+                          );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Pup Added successfully'),
+                        ),
+                      );
+                      // Future.delayed(Duration(seconds: 1));
+                      Navigator.pop(context);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Error adding pup. Please try again.'),
+                        ),
+                      );
+                    }
                   }
                 },
               ),
