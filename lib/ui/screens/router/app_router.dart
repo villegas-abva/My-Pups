@@ -4,6 +4,8 @@ import 'package:my_pups/auth.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/repository/pups_repository/pups_repository.dart';
+import 'package:my_pups/ui/common/widgets/circular_avatar/rounded_image_widget.dart';
+import 'package:my_pups/ui/common/widgets/pup_lottie_animation/pup_lottie_animation.dart';
 import 'package:my_pups/ui/screens/add_pup/add_pup_screen.dart';
 import 'package:my_pups/ui/screens/auth/login/login_screen.dart';
 import 'package:my_pups/ui/screens/auth/register/register_screen.dart';
@@ -26,7 +28,20 @@ class AppRouter {
       case '/':
         return MaterialPageRoute(
             builder: (_) => BlocProvider.value(
-                value: _pupsBloc, child: const HomeScreen()));
+                value: _pupsBloc, child: const AddPupScreen()));
+
+      // return MaterialPageRoute(
+      //     builder: (_) => BlocProvider.value(
+      //         value: _pupsBloc, child: const HomeScreen()));
+
+      // return MaterialPageRoute(builder: (_) => const RoundedImageScreen());
+
+      case '/imagePicker':
+        return MaterialPageRoute(builder: (_) => const RoundedImageScreen());
+
+      case '/pupAnimation':
+        return MaterialPageRoute(
+            builder: (_) => const PupAnimation(height: 300, width: 300));
 
       // Auth
       case '/auth':

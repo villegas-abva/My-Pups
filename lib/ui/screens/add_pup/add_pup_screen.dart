@@ -8,6 +8,7 @@ import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/ui/common/widgets/button/custom_button.dart';
 import 'package:my_pups/ui/common/widgets/circular_avatar/circular_avatar_widget.dart';
+import 'package:my_pups/ui/common/widgets/circular_avatar/rounded_image_widget.dart';
 import 'package:my_pups/ui/common/widgets/clipper/bottom_clipper.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -51,7 +52,7 @@ class _AddPupScreenState extends State<AddPupScreen> {
   }
 
   Future imgFromGallery() async {
-    final ImagePicker _picker = ImagePicker();
+    final _picker = ImagePicker();
 
     final file = await _picker.pickImage(source: ImageSource.gallery);
 
@@ -128,7 +129,11 @@ class _AddPupScreenState extends State<AddPupScreen> {
                 children: [
                   _buildRoundedContainer(height: 180),
                   _buildAppBar(context: context),
-                  _buildImage(topPadding: 110, context: context),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 110.0),
+                    child: RoundedImageWidget(),
+                  ),
+                  // _buildImage(topPadding: 110, context: context),
                   Padding(
                     padding: const EdgeInsets.only(top: 260),
                     child: Container(
