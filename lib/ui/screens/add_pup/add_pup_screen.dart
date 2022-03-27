@@ -23,6 +23,9 @@ class AddPupScreen extends StatefulWidget {
 }
 
 class _AddPupScreenState extends State<AddPupScreen> {
+  var dropDownSelection = 'Male';
+  final sexValues = ['Male', 'Female'];
+
   var imageUrl;
   File? image;
   final _formKey = GlobalKey<FormState>();
@@ -94,9 +97,6 @@ class _AddPupScreenState extends State<AddPupScreen> {
     }
   }
 
-  var dropDownSelection = 'Male';
-  final sexValues = ['Male', 'Female'];
-
   List<String> pupFields = [
     'Name',
     'Breed',
@@ -129,8 +129,45 @@ class _AddPupScreenState extends State<AddPupScreen> {
                   _buildRoundedContainer(height: 180),
                   _buildAppBar(context: context),
                   _buildImage(topPadding: 110, context: context),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 260),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 70),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border:
+                            Border.all(color: Colors.yellow.shade800, width: 1),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const AppRegularText(
+                              text: 'Choose sex', color: Colors.black),
+                          const SizedBox(width: 15),
+                          DropdownButton(
+                            value: dropDownSelection,
+                            hint: const AppRegularText(
+                                text: 'Sex', size: 17, color: Colors.black),
+                            items: sexValues.map((item) {
+                              return DropdownMenuItem(
+                                  value: item,
+                                  child: AppRegularText(
+                                      text: item,
+                                      size: 20,
+                                      color: Colors.black));
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropDownSelection = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   _buildFields(
-                      topPadding: 230,
+                      topPadding: 310,
                       fields: pupFields,
                       controllers: controllers),
                 ],
