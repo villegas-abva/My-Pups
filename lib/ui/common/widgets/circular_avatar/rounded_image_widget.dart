@@ -5,114 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 
-class RoundedImageScreen extends StatefulWidget {
-  const RoundedImageScreen({Key? key}) : super(key: key);
-
-  @override
-  _RoundedImageScreenState createState() => _RoundedImageScreenState();
-}
-
-class _RoundedImageScreenState extends State<RoundedImageScreen> {
-  File? image;
-
-  Future pickImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
-
-      final imageTemporary = File(image.path);
-      setState(() {
-        this.image = imageTemporary;
-      });
-    } on PlatformException catch (e) {
-      print('Failed ot pick image: $e');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var initialAssetImage = 'assets/images/pup_incognito.jpeg';
-
-    // dynamic image = NetworkImage(imageUrl);
-
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: image != null
-                ? ClipOval(child: Image.file(image!, height: 300, width: 300))
-                : Stack(
-                    children: [
-                      ClipOval(
-                        child: Material(
-                          color: Colors.transparent,
-                          child: Ink.image(
-                            image: AssetImage(initialAssetImage),
-                            // image: isNetworkImage
-                            //     ? image
-                            //     : const AssetImage('assets/images/pup_incognito.jpeg'),
-                            fit: BoxFit.cover,
-                            height: 170,
-                            width: 170,
-                            child: InkWell(
-                              onTap: () {},
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 4,
-                        child: InkWell(
-                          // onTap: onClicked,
-                          onTap: () {},
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.yellow.shade800,
-                                border: Border.all(
-                                  width: 3,
-                                  color: Colors.white,
-                                )),
-                            child: const Icon(Icons.edit,
-                                color: Colors.white, size: 20),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-          ),
-          // RoundedImageWidget(),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              InkWell(
-                onTap: () {
-                  pickImage(ImageSource.camera);
-                },
-                child: AppRegularText(text: 'Camera'),
-              ),
-              InkWell(
-                onTap: () {
-                  pickImage(ImageSource.gallery);
-                },
-                child: AppRegularText(text: 'Image'),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class RoundedImageWidget extends StatefulWidget {
-  const RoundedImageWidget({Key? key}) : super(key: key);
+  final Function(File?) fileCallback;
+
+  const RoundedImageWidget({Key? key, required this.fileCallback})
+      : super(key: key);
 
   @override
   _RoundedImageWidgetState createState() => _RoundedImageWidgetState();
@@ -138,10 +35,6 @@ class _RoundedImageWidgetState extends State<RoundedImageWidget> {
   @override
   Widget build(BuildContext context) {
     var initialAssetImage = 'assets/images/pup_incognito.jpeg';
-
-    // dynamic image = NetworkImage(imageUrl);
-    // child: Image.file(image!, height: 300, width: 300),),),
-
     return Center(
       child: Stack(
         children: [
@@ -168,7 +61,7 @@ class _RoundedImageWidgetState extends State<RoundedImageWidget> {
             right: 4,
             child: InkWell(
               onTap: () {
-                pickImage(ImageSource.camera);
+                _showModalBottomSheet(context);
               },
               child: Container(
                 padding: const EdgeInsets.all(8),
@@ -185,6 +78,73 @@ class _RoundedImageWidgetState extends State<RoundedImageWidget> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildBottomSheet(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      child: Wrap(
+        children: [
+          Column(
+            children: [
+              _buildBottomSheetItem(
+                  context: context,
+                  text: 'From Camera',
+                  icon: Icons.add_a_photo,
+                  onTap: () async {
+                    await pickImage(ImageSource.camera);
+                    widget.fileCallback(image);
+                  }),
+              Container(
+                  margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                  child: const Divider(
+                    color: Colors.black,
+                    thickness: 3.0,
+                    height: 26,
+                  )),
+              _buildBottomSheetItem(
+                context: context,
+                text: 'From Gallery',
+                icon: Icons.photo,
+                onTap: () async {
+                  await pickImage(ImageSource.gallery);
+                  widget.fileCallback(image);
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomSheetItem(
+      {required String text,
+      required IconData icon,
+      required BuildContext context,
+      required VoidCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: ListTile(
+        leading: Icon(icon, color: Colors.white),
+        title: AppRegularText(text: text, color: Colors.white),
+      ),
+    );
+  }
+
+  _showModalBottomSheet(context) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(45),
+        ),
+      ),
+      backgroundColor: Colors.yellow.shade800,
+      context: context,
+      builder: (context) {
+        return _buildBottomSheet(context);
+      },
     );
   }
 }
