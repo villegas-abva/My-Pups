@@ -29,7 +29,7 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
   // TODO: make these specific to user
   void _onLoadPups(LoadPups event, Emitter<PupsState> emit) async {
     // emit(const PupsState.loading());
-    // await Future.delayed(const Duration(milliseconds: 2400));
+    // await Future.delayed(const Duration(milliseconds: 3000));
     _pupsSubscription?.cancel();
     _pupsSubscription = _pupsRepository.getAllPups().listen((data) {
       add((UpdatePups(pups: data)));
@@ -41,17 +41,6 @@ class PupsBloc extends Bloc<PupsEvent, PupsState> {
   void _onUpdatePups(UpdatePups event, Emitter<PupsState> emit) async {
     emit(PupsState.success(pups: event.pups, message: ''));
   }
-
-  // void _onTogglePup(TogglePup event, Emitter<PupsState> emit) async {
-  //   final newPups = state.pups.map((pup) {
-  //     if (pup == event.pup) {
-  //       return pup.copyWith(isSelected: !event.pup.isSelected);
-  //     } else {
-  //       return pup;
-  //     }
-  //   }).toList();
-  //   emit(state.copyWith(newPups: newPups));
-  // }
 
   void _onAddPup(AddPup event, Emitter<PupsState> emit) async {
     await _pupsRepository.addPup(pup: event.pup);
