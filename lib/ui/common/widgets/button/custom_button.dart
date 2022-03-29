@@ -3,7 +3,7 @@ import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final Function onTap;
+  final VoidCallback onTap;
   final Color backgroundColor;
   final Color textColor;
   const CustomButton(
@@ -19,25 +19,22 @@ class CustomButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: TextButton(
-        child: Container(
-          height: 60,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(55),
-          ),
-          child: Center(
-            child: AppRegularText(
-              text: 'Save',
-              color: textColor,
-              size: 25,
+          child: Container(
+            height: 60,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(55),
+            ),
+            child: Center(
+              child: AppRegularText(
+                text: text,
+                color: textColor,
+                size: 25,
+              ),
             ),
           ),
-        ),
-        onPressed: () {
-          onTap();
-        },
-      ),
+          onPressed: onTap),
     );
   }
 }
