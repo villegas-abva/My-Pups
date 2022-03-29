@@ -23,9 +23,9 @@ class _RoundedImageWidgetState extends State<RoundedImageWidget> {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
 
-      final imageTemporary = File(image.path);
+      final tempImage = File(image.path);
       setState(() {
-        this.image = imageTemporary;
+        this.image = tempImage;
       });
     } on PlatformException catch (e) {
       print('Failed ot pick image: $e');
@@ -93,7 +93,8 @@ class _RoundedImageWidgetState extends State<RoundedImageWidget> {
                   text: 'From Camera',
                   icon: Icons.add_a_photo,
                   onTap: () async {
-                    await pickImage(ImageSource.camera);
+                    await pickImage(ImageSource.camera)
+                        .then((_) => Navigator.pop(context));
                     widget.fileCallback(image);
                   }),
               Container(
@@ -108,7 +109,8 @@ class _RoundedImageWidgetState extends State<RoundedImageWidget> {
                 text: 'From Gallery',
                 icon: Icons.photo,
                 onTap: () async {
-                  await pickImage(ImageSource.gallery);
+                  await pickImage(ImageSource.gallery)
+                      .then((_) => Navigator.pop(context));
                   widget.fileCallback(image);
                 },
               ),
