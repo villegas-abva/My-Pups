@@ -82,6 +82,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
+            ListTile(
+              title: const AppRegularText(
+                text: 'Image Picker',
+                color: Colors.white,
+                size: 21,
+              ),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/imagePicker',
+                );
+              },
+            ),
+            ListTile(
+              title: const AppRegularText(
+                text: 'Pup Animation',
+                color: Colors.white,
+                size: 21,
+              ),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/pupAnimation',
+                );
+              },
+            ),
           ],
         ),
       ),
