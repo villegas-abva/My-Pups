@@ -50,7 +50,7 @@ class CircularAvatarWidget extends StatelessWidget {
                       width: 3,
                       color: Colors.white,
                     )),
-                child: const Icon(Icons.edit, color: Colors.white, size: 20),
+                child: Icon(Icons.edit, color: Colors.white, size: 20),
               ),
             ),
           ),

@@ -27,7 +27,6 @@ class CustomTextFormField extends StatelessWidget {
   final Color borderColor;
   final Color labelColor;
   final Color textColor;
-
   final bool isPassword;
 
   @override

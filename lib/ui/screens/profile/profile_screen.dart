@@ -33,7 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           const SizedBox(height: 25),
           CircularAvatarWidget(
-            imagePath: user.imagePath,
+            imageUrl: user.imagePath,
             onClicked: () async {},
           ),
           const SizedBox(height: 10),

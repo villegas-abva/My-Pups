@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_pups/ui/common/widgets/text/app_large_text.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
-import 'package:my_pups/ui/common/widgets/text_form_field/app_textform_field.dart';
+import 'package:my_pups/ui/common/widgets/text_form_field/custom_text_form_field.dart';
 
 class RegisterScreen extends StatelessWidget {
   final Function toggleScreen;
@@ -44,21 +44,21 @@ class RegisterScreen extends StatelessWidget {
                 const AppRegularText(
                     text: 'Create new account', color: Colors.grey),
                 const SizedBox(height: 60),
-                AppTextFormField(
+                CustomTextFormField(
                   label: 'Name',
                   controller: nameController,
                   hasPrefixIcon: true,
                   icon: Icons.person,
                 ),
                 const SizedBox(height: 20),
-                AppTextFormField(
+                CustomTextFormField(
                   label: 'Email',
                   controller: emailContoller,
                   hasPrefixIcon: true,
                   icon: Icons.email,
                 ),
                 const SizedBox(height: 20),
-                AppTextFormField(
+                CustomTextFormField(
                   label: 'Password',
                   controller: passwordController,
                   hasPrefixIcon: true,
@@ -66,7 +66,7 @@ class RegisterScreen extends StatelessWidget {
                   isPassword: true,
                 ),
                 const SizedBox(height: 20),
-                AppTextFormField(
+                CustomTextFormField(
                   label: 'Confirm Password',
                   controller: confirmPassWordController,
                   hasPrefixIcon: true,
