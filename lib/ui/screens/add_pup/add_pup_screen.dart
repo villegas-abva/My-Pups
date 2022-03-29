@@ -21,7 +21,6 @@ class AddPupScreen extends StatefulWidget {
 class _AddPupScreenState extends State<AddPupScreen> {
   var dropDownSelection = 'Male';
   final sexValues = ['Male', 'Female'];
-  String _string = 'Not set yet';
 
   var imageUrl;
   File? image;
@@ -84,10 +83,6 @@ class _AddPupScreenState extends State<AddPupScreen> {
                 alignment: Alignment.topCenter,
                 children: [
                   _buildRoundedContainer(height: 180),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40),
-                    child: AppRegularText(text: _string, color: Colors.white),
-                  ),
                   _buildAppBar(context: context, topPadding: 50),
                   Padding(
                     padding: const EdgeInsets.only(top: 110.0),
