@@ -1,9 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_pups/bloc/pups/pups_bloc.dart';
+import 'package:my_pups/database/models/pup/pup.dart';
 import 'package:my_pups/ui/common/widgets/button/custom_button.dart';
 import 'package:my_pups/ui/common/widgets/circular_avatar/rounded_image_widget.dart';
 import 'package:my_pups/ui/common/widgets/clipper/bottom_clipper.dart';
+import 'package:my_pups/ui/common/widgets/custom_dialog/custom_dialog.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:my_pups/ui/common/widgets/text_form_field/custom_text_form_field.dart';
@@ -32,11 +36,7 @@ class _AddPupScreenState extends State<AddPupScreen> {
       firebase_storage.FirebaseStorage.instance;
 
   Future uploadFile() async {
-    print(_photo);
-    print('entro');
     if (_photo == null) return;
-    print('salio');
-
     final fileName = basename(_photo!.path);
     const destination = 'my_pups/';
 
@@ -106,48 +106,40 @@ class _AddPupScreenState extends State<AddPupScreen> {
                 text: 'Save',
                 textColor: Color.fromARGB(255, 70, 90, 121),
                 backgroundColor: Colors.yellow.shade800,
-                onTap: () {
-                  uploadFile();
-                  // if (_formKey.currentState!.validate()) {
-                  //   controllers.forEach((element) {
-                  //     print(element.text);
-                  //   });
-
-                  //   try {
-                  //     final pup = Pup(
-                  //       name: controllers[0].text,
-                  //       breed: controllers[1].text,
-                  //       age: int.parse(controllers[2].text),
-                  //       owner: controllers[3].text,
-                  //       petClinic: controllers[4].text,
-                  //       vetName: controllers[5].text,
-                  //       vetNotes: controllers[6].text,
-                  //       lastVisit: controllers[7].text,
-                  //       nextVisit: controllers[8].text,
-                  //       sex: dropDownSelection,
-                  //       imageUrl:
-                  //           'https://firebasestorage.googleapis.com/v0/b/my-pups-36a9a.appspot.com/o/my_pups%2Fdog_incognito.jpg.webp?alt=media&token=9b92f4eb-ee0b-4bd2-b3a7-c8e35608caee',
-                  //       hasClinic: false,
-                  //       id: '',
-                  //     );
-                  //     context.read<PupsBloc>().add(
-                  //           AddPup(pup: pup),
-                  //         );
-                  //     ScaffoldMessenger.of(context).showSnackBar(
-                  //       const SnackBar(
-                  //         content: Text('Pup Added successfully'),
-                  //       ),
-                  //     );
-                  //     // Future.delayed(Duration(seconds: 1));
-                  //     Navigator.pop(context);
-                  //   } catch (e) {
-                  //     ScaffoldMessenger.of(context).showSnackBar(
-                  //       const SnackBar(
-                  //         content: Text('Error adding pup. Please try again.'),
-                  //       ),
-                  //     );
-                  //   }
-                  // }
+                onTap: () async {
+                  if (_formKey.currentState!.validate()) {
+                    print(image);
+                    try {
+                      await uploadFile();
+                      final pup = Pup(
+                        name: controllers[0].text,
+                        breed: controllers[1].text,
+                        age: int.parse(controllers[2].text),
+                        owner: controllers[3].text,
+                        petClinic: controllers[4].text,
+                        vetName: controllers[5].text,
+                        vetNotes: controllers[6].text,
+                        lastVisit: controllers[7].text,
+                        nextVisit: controllers[8].text,
+                        sex: dropDownSelection,
+                        imageUrl: imageUrl ?? '',
+                        hasClinic: false,
+                        id: '',
+                      );
+                      context.read<PupsBloc>().add(
+                            AddPup(pup: pup),
+                          );
+                      _showDialog(
+                        context: context,
+                        success: true,
+                      );
+                    } catch (e) {
+                      _showDialog(
+                        context: context,
+                        success: false,
+                      );
+                    }
+                  }
                 },
               ),
             ],
@@ -231,5 +223,24 @@ class _AddPupScreenState extends State<AddPupScreen> {
         ),
       ),
     );
+  }
+
+  _showDialog({required BuildContext context, required bool success}) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CustomDialog(
+              title: success ? 'Success!' : 'Oh no!',
+              message: success
+                  ? 'Pup added succesfully'
+                  : 'Error adding pup. Please try again',
+              onTap: () {
+                success
+                    ? Navigator.pushNamed(context, '/')
+                    : Navigator.pop(context);
+              },
+              buttonText: 'Continue');
+        });
   }
 }
