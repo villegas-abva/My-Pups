@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:my_pups/shared/constants/constants.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 
 class RoundedImageWidget extends StatefulWidget {
@@ -34,7 +35,7 @@ class _RoundedImageWidgetState extends State<RoundedImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var initialAssetImage = 'assets/images/pup_incognito.jpeg';
+    var initialAssetImage = AppImages.incognito_image;
     return Center(
       child: Stack(
         children: [

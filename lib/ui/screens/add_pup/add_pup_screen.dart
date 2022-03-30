@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_pups/bloc/pups/pups_bloc.dart';
 import 'package:my_pups/database/models/pup/pup.dart';
+import 'package:my_pups/shared/constants/messages_constants.dart';
 import 'package:my_pups/ui/common/widgets/button/custom_button.dart';
 import 'package:my_pups/ui/common/widgets/circular_avatar/rounded_image_widget.dart';
 import 'package:my_pups/ui/common/widgets/clipper/bottom_clipper.dart';
 import 'package:my_pups/ui/common/widgets/custom_dialog/custom_dialog.dart';
+import 'package:my_pups/ui/common/widgets/pup_lottie_animation/pup_lottie_animation.dart';
 import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:my_pups/ui/common/widgets/text_form_field/custom_text_form_field.dart';
@@ -15,14 +17,56 @@ import 'package:my_pups/ui/screens/add_pup/sex_widget.dart';
 import 'package:path/path.dart';
 
 class AddPupScreen extends StatefulWidget {
-  const AddPupScreen({
-    Key? key,
-  }) : super(key: key);
+  const AddPupScreen({Key? key}) : super(key: key);
+
   @override
-  State<AddPupScreen> createState() => _AddPupScreenState();
+  _AddPupScreenState createState() => _AddPupScreenState();
 }
 
 class _AddPupScreenState extends State<AddPupScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: BlocBuilder<PupsBloc, PupsState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case PupsStatus.initial:
+              return const SizedBox.shrink();
+            case PupsStatus.loading:
+              return const Center(child: CircularProgressIndicator()
+                  // child: PupAnimation(height: 300, width: 300),
+                  );
+            // return const LoadingWidget(text: 'Loading Pups...');
+            case PupsStatus.error:
+              return const Center(child: Text('Error!!'));
+            case PupsStatus.empty:
+              return const SizedBox.shrink();
+            case PupsStatus.success:
+              return AddPupBody(
+                context: context,
+                state: state,
+              );
+          }
+        },
+      ),
+    );
+  }
+}
+
+class AddPupBody extends StatefulWidget {
+  final BuildContext context;
+  final PupsState state;
+  const AddPupBody({
+    Key? key,
+    required this.context,
+    required this.state,
+  }) : super(key: key);
+  @override
+  State<AddPupBody> createState() => _AddPupBodyState();
+}
+
+class _AddPupBodyState extends State<AddPupBody> {
   var dropDownSelection = 'Male';
   final sexValues = ['Male', 'Female'];
 
@@ -108,7 +152,6 @@ class _AddPupScreenState extends State<AddPupScreen> {
                 backgroundColor: Colors.yellow.shade800,
                 onTap: () async {
                   if (_formKey.currentState!.validate()) {
-                    print(image);
                     try {
                       await uploadFile();
                       final pup = Pup(
@@ -122,7 +165,8 @@ class _AddPupScreenState extends State<AddPupScreen> {
                         lastVisit: controllers[7].text,
                         nextVisit: controllers[8].text,
                         sex: dropDownSelection,
-                        imageUrl: imageUrl ?? '',
+                        imageUrl:
+                            imageUrl ?? MessagesConstants.incognitoPupLink,
                         hasClinic: false,
                         id: '',
                       );
