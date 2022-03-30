@@ -7,8 +7,14 @@ import 'package:my_pups/ui/common/widgets/text/app_regular_text.dart';
 
 class RoundedImageWidget extends StatefulWidget {
   final Function(File?) fileCallback;
+  final String? imageUrl;
+  final bool hasImage;
 
-  const RoundedImageWidget({Key? key, required this.fileCallback})
+  const RoundedImageWidget(
+      {Key? key,
+      required this.fileCallback,
+      this.hasImage = false,
+      this.imageUrl})
       : super(key: key);
 
   @override
@@ -40,21 +46,23 @@ class _RoundedImageWidgetState extends State<RoundedImageWidget> {
         children: [
           ClipOval(
             child: Material(
-              color: Colors.transparent,
-              child: image != null
-                  ? Image.file(
-                      image!,
-                      height: 130,
-                      width: 130,
-                      fit: BoxFit.cover,
-                    )
-                  : Ink.image(
-                      image: AssetImage(initialAssetImage),
-                      fit: BoxFit.cover,
-                      height: 130,
-                      width: 130,
-                    ),
-            ),
+                color: Colors.transparent,
+                child: image != null
+                    ? Image.file(
+                        image!,
+                        height: 130,
+                        width: 130,
+                        fit: BoxFit.cover,
+                      )
+                    : Ink.image(
+                        image: widget.hasImage
+                            ? NetworkImage(widget.imageUrl.toString())
+                            : AssetImage(initialAssetImage)
+                                as ImageProvider<Object>,
+                        fit: BoxFit.cover,
+                        height: 130,
+                        width: 130,
+                      )),
           ),
           Positioned(
             bottom: 0,

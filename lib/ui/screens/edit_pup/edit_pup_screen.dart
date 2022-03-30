@@ -90,11 +90,14 @@ class _EditPupScreenState extends State<EditPupScreen> {
                   _buildAppBar(context: context),
                   Padding(
                     padding: const EdgeInsets.only(top: 110.0),
-                    child: RoundedImageWidget(fileCallback: (f) {
-                      setState(() {
-                        _photo = f!;
-                      });
-                    }),
+                    child: RoundedImageWidget(
+                        imageUrl: widget.pup.imageUrl,
+                        hasImage: true,
+                        fileCallback: (f) {
+                          setState(() {
+                            _photo = f!;
+                          });
+                        }),
                   ),
                   SexWidget(stringCallback: (sex) {
                     dropDownSelection = sex!;
