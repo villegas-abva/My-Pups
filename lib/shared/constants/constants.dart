@@ -10,6 +10,8 @@ class AppImages {
 
   // static final String juanito_image = _image('juanito');
   static const String juanito_image = 'assets/images/juanito.png';
+
+  static const String incognito_image = 'assets/images/pup_incognito.jpeg';
 }
 
 abstract class AppTextStyles {
