@@ -207,84 +207,84 @@ class _PupDetailsScreenState extends State<PupDetailsScreen> {
       ),
     );
   }
-}
 
-Widget _buildBottomSheet(BuildContext context, Pup pup) {
-  return Container(
-    color: Colors.white,
-    height: 140,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(
-              Icons.close,
-              size: 28,
+  Widget _buildBottomSheet(BuildContext context, Pup pup) {
+    return Container(
+      color: Colors.white,
+      height: 140,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(
+                Icons.close,
+                size: 28,
+              ),
             ),
-          ),
-          const SizedBox(height: 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ActionsWidget(
-                icon: Icons.edit,
-                text: 'Edit Pup',
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/editPup',
-                  );
-                  // context.read<PupsBloc>().add(EditPup(pup: pup));
-                  // Navigator.pop(context);
+            const SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ActionsWidget(
+                  icon: Icons.edit,
+                  text: 'Edit Pup',
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/editPup',
+                    );
+                    // context.read<PupsBloc>().add(EditPup(pup: pup));
+                    // Navigator.pop(context);
 
-                  // Navigator.pushNamed(
-                  //   context,
-                  //   '/',
-                  // );
-                },
-              ),
-              ActionsWidget(
-                icon: Icons.delete,
-                text: 'Delete Pup',
-                onTap: () {
-                  context.read<PupsBloc>().add(DeletePup(pup: pup));
-                  Navigator.pop(context);
-                  Navigator.pushNamed(
-                    context,
-                    '/',
-                  );
-                },
-              ),
-            ],
-          ),
-        ],
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   '/',
+                    // );
+                  },
+                ),
+                ActionsWidget(
+                  icon: Icons.delete,
+                  text: 'Delete Pup',
+                  onTap: () {
+                    context.read<PupsBloc>().add(DeletePup(pup: pup));
+                    Navigator.pop(context);
+                    Navigator.pushNamed(
+                      context,
+                      '/',
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget _buildBackDropWidget({double? top, double? left, double? right}) {
-  return Positioned(
-    top: top,
-    left: left,
-    right: right,
-    width: 33,
-    height: 33,
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(25),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.2),
+  Widget _buildBackDropWidget({double? top, double? left, double? right}) {
+    return Positioned(
+      top: top,
+      left: left,
+      right: right,
+      width: 33,
+      height: 33,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(25),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.2),
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
